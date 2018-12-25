@@ -63,6 +63,14 @@ module LibreFrame
 
         @closed = hash['isClosed']
       end
+
+      def contains_position?(point, view)
+        translated_position = view.tp(position) + offset
+
+        # TODO: Sizing ignores zoom
+        # TODO: Disgustingly long line
+        point.x >= translated_position.x && point.x <= translated_position.x + width && point.y >= translated_position.y && point.y <= translated_position.y + height
+      end
     end
   end
 end
