@@ -43,12 +43,20 @@ module LibreFrame
       end
 
       # Draws this canvas' elements.
-      # TODO: Clear before draw?
       def draw
         ctx = window.create_cairo_context
         
         @elements.each do |element|
           element.cairo_draw(ctx, view)
+        end
+
+        if view.debug?
+          view.debug_points.each do |point|
+            puts "Debug point: #{point}"
+            ctx.set_source_rgb(1, 0, 0)
+            ctx.rectangle(point.x, point.y, 1, 1)
+            ctx.fill
+          end
         end
       end
     end
