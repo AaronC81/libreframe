@@ -6,7 +6,7 @@ module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
-      attr_accessor :view, :selection
+      attr_accessor :view, :selection, :elements
 
       DEBUG_POINT_COLOR = [1, 0, 0]
       SELECTION_BOX_COLOR = [0, 0, 1, 0.4]
@@ -40,18 +40,12 @@ module LibreFrame
         set_events :button_press_mask
       end
 
-      # Queues a collection of elements onto this canvas.
-      def queue_element_draw(elements)
-        @elements = elements
-        queue_draw
-      end
-
       # Draws this canvas' elements.
       def draw
         ctx = window.create_cairo_context
         
         # Draw elements
-        @elements.each do |element|
+        elements.each do |element|
           element.cairo_draw(ctx, view)
         end
 
