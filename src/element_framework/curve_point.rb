@@ -21,7 +21,7 @@ module LibreFrame
         @curve_from = loader.string_to_point(hash['curveFrom'])
         @curve_to = loader.string_to_point(hash['curveTo'])
         @point = loader.string_to_point(hash['point'])
-        @corner_radius = loader.string_to_point(hash['cornerRadius'])
+        @corner_radius = hash['cornerRadius'].to_i
       end
     end
   end

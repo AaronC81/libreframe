@@ -1,4 +1,5 @@
 require_relative 'element'
+require_relative '../core/array'
 
 module LibreFrame
   module ElementFramework
@@ -19,12 +20,34 @@ module LibreFrame
       def cairo_draw(ctx, view)        
         # TODO: Implement decent RELATIVE rotation, might want a rotation offset
         # Should translate stuff so midpt is 0,0 then rotate and translate back
-        translated_point = view.tp(position) + offset
+        translated_origin_point = view.tp(position) + offset
 
-        points.each do |curve_point|
-          pt = curve_point.point
-          offset = translated_point + pt * Core::Point.new(width, height)
-          ctx.line_to(offset.x, offset.y)
+        # Iterate over each point
+        points.length.times do |i|
+          # Find points
+          previous_point = points[i - 1]
+          current_point = points[i]
+          next_point = points[(i + 1) % points.length]
+
+          # Translate each point from relative ratio to actual point
+          translated_current_point = translated_origin_point + current_point.point * Core::Point.new(width, height)
+          translated_previous_point = translated_origin_point + previous_point.point * Core::Point.new(width, height)
+          translated_next_point = translated_origin_point + next_point.point * Core::Point.new(width, height)
+
+          moved_towards_previous_point = change_line_length(translated_previous_point, translated_current_point, -1 * (current_point.corner_radius || 0))
+          moved_towards_next_point = change_line_length(translated_next_point, translated_current_point, -1 * (current_point.corner_radius || 0))
+
+          puts "#{translated_current_point} -> #{moved_towards_previous_point}"
+          puts "#{translated_current_point} -> #{moved_towards_next_point}"
+          puts "Relative to #{translated_current_point}"
+
+          # Draw a "curve" for this point
+          ctx.line_to(moved_towards_previous_point.x, moved_towards_previous_point.y)
+          ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
+
+          view.debug_points << moved_towards_previous_point
+          view.debug_points << translated_current_point
+          view.debug_points << moved_towards_next_point
         end
         ctx.close_path if closed?  
 
@@ -52,7 +75,7 @@ module LibreFrame
         delta_x = (e.x - s.x) / divisor
         delta_y = (e.y - s.y) / divisor
 
-        Point.new(e.x + delta_x * divisor, e.y + delta_y * divisor)
+        Core::Point.new(e.x + delta_x * delta, e.y + delta_y * delta)
       end
     end
   end
