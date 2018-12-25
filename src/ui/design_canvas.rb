@@ -52,7 +52,6 @@ module LibreFrame
 
         if view.debug?
           view.debug_points.each do |point|
-            puts "Debug point: #{point}"
             ctx.set_source_rgb(1, 0, 0)
             ctx.rectangle(point.x, point.y, 1, 1)
             ctx.fill
