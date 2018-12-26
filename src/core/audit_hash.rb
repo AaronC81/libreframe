@@ -32,7 +32,7 @@ module LibreFrame
       end
 
       def self.from_hash(hash)
-        audit_hash = AuditHash.new(hash)
+        audit_hash = AuditHash.new
         hash.each do |k, v|
           audit_hash[k] = v.is_a?(Hash) \
             ? AuditHash.from_hash(v)
