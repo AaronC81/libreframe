@@ -14,7 +14,7 @@ module LibreFrame
       end
 
       def cairo_draw(ctx)
-        ctx.set_source_rgb(*color)
+        ctx.set_source_rgba(*color.to_cairo)
         ctx.stroke_preserve
       end
     end
