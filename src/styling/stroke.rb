@@ -9,7 +9,7 @@ module LibreFrame
       attr_writer :enabled
       def enabled?; @enabled; end
 
-      attr_accessor :color, :thickness
+      attr_accessor :color, :thickness, :alignment
 
       def initialize
         @enabled = true
@@ -42,6 +42,12 @@ module LibreFrame
           color_hash['blue'].to_f,
           color_hash['alpha'].to_f
         )
+
+        @enabled = hash['isEnabled']
+
+        # Sketch calls inside/outside/center "position", but here it's called
+        # alignment to avoid any confusion with points
+        @alignment = [:inside, :outside, :center][hash['position']] # TODO Is this correct?
 
         @thickness = hash['thickness'].to_f
       end
