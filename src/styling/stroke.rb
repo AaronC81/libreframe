@@ -1,21 +1,38 @@
 module LibreFrame
   module Styling
-    # An abstract class specifying a method of stroking.
+    # A class specifying a method of stroking. 
+    # Note that .sketch files refer to these as borders, while Cairo (and
+    # hence LibreFrame) call them strokes.
     # TODO: Support inner/outer/middle
     class Stroke
       attr_writer :enabled
       def enabled?; @enabled; end
 
-      def initialize
+      attr_accessor :color
+
+      def initialize(color=nil)
         @enabled = true
+        @color = color
       end
 
-      # Executes this stroke onto a Gtk3 Cairo context, given that the shape
-      # has already been specified.  This abstract implementation simply
-      # throws an exception, so subclasses MUST NOT invoke super in their
-      # implementations. Implementations should preserve the shape.
-      def cairo_draw(context)
-        raise 'this stroke cannot be drawn (tried to draw abstract Stroke)'
+      def cairo_draw(ctx)
+        ctx.set_source_rgba(*color.to_cairo)
+        ctx.stroke_preserve
+      end
+
+      def from_sketch_json_hash(hash, loader)
+        if hash['fillType'] != 0
+          loader.log "unknown fill type #{hash['fillType']}, skipping"
+          return
+        end
+
+        color_hash = hash['color']
+        @color = Core::Color.new(
+          color_hash['red'].to_f,
+          color_hash['green'].to_f,
+          color_hash['blue'].to_f,
+          color_hash['alpha'].to_f
+        )
       end
     end
   end
