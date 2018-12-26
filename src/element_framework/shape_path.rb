@@ -20,7 +20,7 @@ module LibreFrame
       def cairo_draw(ctx, view)        
         # TODO: Implement decent RELATIVE rotation, might want a rotation offset
         # Should translate stuff so midpt is 0,0 then rotate and translate back
-        translated_origin_point = view.tp(position) + offset
+        translated_origin_point = absolute_position(view)
 
         # Iterate over each point
         points.length.times do |i|
@@ -65,7 +65,7 @@ module LibreFrame
       end
 
       def contains_position?(point, view)
-        translated_position = view.tp(position) + offset
+        translated_position = absolute_position(view)
 
         # TODO: Sizing ignores zoom
         # TODO: Disgustingly long line

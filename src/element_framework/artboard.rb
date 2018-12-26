@@ -11,9 +11,9 @@ module LibreFrame
         super
       end
 
-      def cairo_draw(ctx, view)
-        translated_point = view.tp(position)
-        ctx.rectangle(translated_point.x, translated_point.y, view.sl(width), view.sl(height))
+      def cairo_draw(ctx, view)        
+        abs_pos = absolute_position(view)
+        ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
 
         if fills.empty?
           ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR.to_cairo)

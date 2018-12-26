@@ -55,8 +55,7 @@ module LibreFrame
         # Draw selection bounding box
         unless selection.nil?
           ctx.set_source_rgba(*SELECTION_BOX_COLOR.to_cairo)
-          # TODO: There REALLY needs to be a method for view.tp + offset
-          pos = view.tp(selection.position) + selection.offset
+          pos = selection.absolute_position(view)
           ctx.rectangle(pos.x, pos.y, selection.width, selection.height)
           ctx.fill
         end
