@@ -2,7 +2,7 @@ require_relative '../core/color'
 
 module LibreFrame
   module Styling
-    # An class specifying a method of filling.
+    # A class specifying a method of filling.
     class Fill
       attr_writer :enabled
       def enabled?; @enabled; end
