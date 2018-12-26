@@ -1,10 +1,11 @@
-require_relative "../core/point"
+require_relative '../core/point'
+require_relative '../core/audit_hash'
 
 module LibreFrame
   module Serialization
     # Contains methods to convert Sketch 43+ JSON data into ElementFramework
     # instances.
-    class Loader
+    class SketchLoader
       attr_accessor :classes, :log_stream
 
       def initialize(log_stream, classes)
@@ -13,6 +14,8 @@ module LibreFrame
       end
 
       def dispatch(hash)
+        hash = Core::AuditHash.from_hash(hash) unless hash.is_a?(Core::AuditHash)
+
         unless classes[hash['_class']]
           log "no class #{hash['_class']}"
           return
