@@ -23,6 +23,11 @@ module LibreFrame
 
         instance = classes[hash['_class']].new
         instance.from_sketch_json_hash(hash, self)
+
+        if !hash.non_accessed_keys.empty?
+          log "#{hash['_class']} may be incomplete; never accessed #{hash.non_accessed_keys.join(', ')}"
+        end
+
         instance
       end
 
