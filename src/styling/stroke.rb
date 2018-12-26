@@ -9,11 +9,12 @@ module LibreFrame
       attr_writer :enabled
       def enabled?; @enabled; end
 
-      attr_accessor :color
+      attr_accessor :color, :thickness
 
-      def initialize(color=nil)
+      def initialize
         @enabled = true
-        @color = color
+        @color = nil
+        @thickness = nil
       end
 
       def cairo_draw(ctx)
@@ -24,6 +25,7 @@ module LibreFrame
         end
 
         ctx.set_source_rgba(*color.to_cairo)
+        ctx.set_line_width(thickness)
         ctx.stroke_preserve
       end
 
@@ -40,6 +42,8 @@ module LibreFrame
           color_hash['blue'].to_f,
           color_hash['alpha'].to_f
         )
+
+        @thickness = hash['thickness'].to_f
       end
     end
   end
