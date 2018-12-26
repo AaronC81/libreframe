@@ -49,6 +49,8 @@ module LibreFrame
           element.cairo_draw(ctx, view)
         end
 
+        ctx.new_path
+
         # Draw selection bounding box
         unless selection.nil?
           ctx.set_source_rgba(*SELECTION_BOX_COLOR)
