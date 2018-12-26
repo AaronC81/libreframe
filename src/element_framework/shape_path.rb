@@ -38,9 +38,18 @@ module LibreFrame
           moved_towards_previous_point = Core::Geometry.change_line_length(translated_previous_point, translated_current_point, -1 * (current_point.corner_radius || 0))
           moved_towards_next_point = Core::Geometry.change_line_length(translated_next_point, translated_current_point, -1 * (current_point.corner_radius || 0))
 
-          # Draw a "curve" for this point
+          # Draw a curve for this point
+          # TODO: The rounding isn't "intense" enough for some corners
           ctx.line_to(moved_towards_previous_point.x, moved_towards_previous_point.y)
-          ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
+          #ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
+          ctx.curve_to(
+            translated_current_point.x,
+            translated_current_point.y,
+            moved_towards_next_point.x,
+            moved_towards_next_point.y,
+            moved_towards_next_point.x,
+            moved_towards_next_point.y
+          )
 
           view.debug_points << moved_towards_previous_point
           view.debug_points << translated_current_point
@@ -49,7 +58,6 @@ module LibreFrame
         ctx.close_path if closed?  
 
         cairo_draw_styles(ctx, view)
-
         cairo_draw_children(ctx, view)
       end
 
