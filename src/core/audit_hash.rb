@@ -12,9 +12,11 @@ module LibreFrame
       end
 
       def [](key)
-        super(key)
+        res = super(key)
 
         @accessed_keys << key
+
+        res
       end
 
       # Returns an array of all keys accessed during this hash's lifetime. May
