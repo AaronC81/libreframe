@@ -4,6 +4,7 @@ module LibreFrame
     # Note that .sketch files refer to these as borders, while Cairo (and
     # hence LibreFrame) call them strokes.
     # TODO: Support inner/outer/middle
+    # TODO: Thickness
     class Stroke
       attr_writer :enabled
       def enabled?; @enabled; end
@@ -16,6 +17,12 @@ module LibreFrame
       end
 
       def cairo_draw(ctx)
+        # FIXME
+        if color == nil
+          puts "stroke color nil due to a loader bug, skipping draw"
+          return
+        end
+
         ctx.set_source_rgba(*color.to_cairo)
         ctx.stroke_preserve
       end
