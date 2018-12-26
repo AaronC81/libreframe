@@ -1,3 +1,5 @@
+require_relative '../core/color'
+
 module LibreFrame
   module Styling
     # An class specifying a method of filling.
@@ -23,9 +25,13 @@ module LibreFrame
           return
         end
 
-        # TODO: Color alpha
         color_hash = hash['color']
-        @color = [color_hash['red'].to_f, color_hash['green'].to_f, color_hash['blue'].to_f]
+        @color = Core::Color.new(
+          color_hash['red'].to_f,
+          color_hash['green'].to_f,
+          color_hash['blue'].to_f,
+          color_hash['alpha'].to_f
+        )
       end
     end
   end
