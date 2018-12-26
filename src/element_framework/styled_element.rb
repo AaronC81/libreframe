@@ -13,8 +13,13 @@ module LibreFrame
         @strokes = []
       end
 
-      # Invokes #draw on all of the fills and strokes which this element has.
+      # Invokes #draw on all of the fills and strokes which this element has, as
+      # well as those of any parents.
       def cairo_draw_styles(ctx, view)
+        if !parent.nil? && parent.is_a?(StyledElement)
+          parent.cairo_draw_styles(ctx, view)
+        end
+
         fills.each do |fill|
           fill.cairo_draw(ctx) if fill.enabled?
         end
