@@ -64,6 +64,11 @@ module LibreFrame
         @closed = hash['isClosed']
       end
 
+      # TODO: Cairo has a method for hit detection along a path which could be
+      # used to make this MUCH better, though it would require a redraw on click
+      # most likely (expensive) unless we gave elements a method to just plot
+      # their path and not actually apply any style.
+      # https://cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-extents
       def contains_position?(point, view)
         translated_position = absolute_position(view)
 
