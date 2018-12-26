@@ -65,6 +65,12 @@ module LibreFrame
         [self] + children.flat_map(&:onedimensionalize)
       end
 
+      # Returns the absolute position of this element with respect to a
+      # particular view.
+      def absolute_position(view)
+        view.tp(position) + offset
+      end
+
       # Returns a boolean indicating whether this element contains a certain
       # click position when rendered in a view. By default, this is
       # unimplemented and always returns false.
