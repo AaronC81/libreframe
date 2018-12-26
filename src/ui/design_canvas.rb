@@ -1,6 +1,7 @@
 require 'gtk3'
 require_relative 'view'
 require_relative '../core/point'
+require_relative '../core/color'
 
 module LibreFrame
   module UI
@@ -8,8 +9,8 @@ module LibreFrame
     class DesignCanvas < Gtk::DrawingArea
       attr_accessor :view, :selection, :elements
 
-      DEBUG_POINT_COLOR = [1, 0, 0]
-      SELECTION_BOX_COLOR = [0, 0, 1, 0.4]
+      DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
+      SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
 
       def initialize
         super
@@ -53,7 +54,7 @@ module LibreFrame
 
         # Draw selection bounding box
         unless selection.nil?
-          ctx.set_source_rgba(*SELECTION_BOX_COLOR)
+          ctx.set_source_rgba(*SELECTION_BOX_COLOR.to_cairo)
           # TODO: There REALLY needs to be a method for view.tp + offset
           pos = view.tp(selection.position) + selection.offset
           ctx.rectangle(pos.x, pos.y, selection.width, selection.height)
@@ -63,7 +64,7 @@ module LibreFrame
         # Draw debug points, if debug mode enabled
         if view.debug?
           view.debug_points.each do |point|
-            ctx.set_source_rgb(*DEBUG_POINT_COLOR)
+            ctx.set_source_rgba(*DEBUG_POINT_COLOR.to_cairo)
             ctx.rectangle(point.x, point.y, 1, 1)
             ctx.fill
           end
