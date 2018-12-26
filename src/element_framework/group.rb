@@ -3,9 +3,7 @@ require_relative 'element'
 module LibreFrame
   module ElementFramework
     # A group of other elements.
-    class Group < Element
-      attr_accessor :fills, :strokes
-
+    class Group < StyledElement
       def initialize
         super
       end
