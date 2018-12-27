@@ -11,6 +11,7 @@ module LibreFrame
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
+      BACKGROUND_COLOR = Core::Color.new(0.9, 0.9, 0.9, 1)
 
       def initialize
         super
@@ -47,6 +48,11 @@ module LibreFrame
       def draw
         ctx = window.create_cairo_context
         
+        # Draw background
+        ctx.set_source_rgba(*BACKGROUND_COLOR.to_cairo)
+        ctx.rectangle(0, 0, 10000, 10000) # TODO: Actually use widget size
+        ctx.fill
+
         # Draw elements
         elements.each do |element|
           element.cairo_draw(ctx, view)
