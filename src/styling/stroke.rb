@@ -23,10 +23,28 @@ module LibreFrame
           puts "stroke color nil due to a loader bug, skipping draw"
           return
         end
+        
+        # Create a new group then paint onto the layer so we can do nifty
+        # stroke position hacky stuff
+        ctx.push_group
 
         ctx.set_source_rgba(*color.to_cairo)
-        ctx.set_line_width(thickness)
-        ctx.stroke_preserve
+
+        # TODO: Inner not supported
+        actual_thickness = (alignment == :outside ? thickness * 2 : thickness)
+        ctx.set_line_width(actual_thickness)
+        ctx.stroke_preserve 
+
+        if alignment == :outside
+          ctx.save
+          ctx.set_source_rgba(1, 1, 1, 0)
+          ctx.set_operator(Cairo::OPERATOR_CLEAR)
+          ctx.fill_preserve
+          ctx.restore
+        end
+
+        ctx.pop_group_to_source
+        ctx.paint
       end
 
       def from_sketch_json_hash(hash, loader)
@@ -47,7 +65,7 @@ module LibreFrame
 
         # Sketch calls inside/outside/center "position", but here it's called
         # alignment to avoid any confusion with points
-        @alignment = [:inside, :outside, :center][hash['position']] # TODO Is this correct?
+        @alignment = [:inside, :center, :outside][hash['position']] # TODO Is this correct?
 
         @thickness = hash['thickness'].to_f
       end
