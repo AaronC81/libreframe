@@ -31,7 +31,7 @@ module LibreFrame
         ctx.set_source_rgba(*color.to_cairo)
 
         # TODO: Inner not supported
-        actual_thickness = (alignment == :outside ? thickness * 2 : thickness)
+        actual_thickness = ((alignment == :outside || alignment == :inside) ? thickness * 2 : thickness)
         ctx.set_line_width(actual_thickness)
         ctx.stroke_preserve 
 
@@ -43,8 +43,20 @@ module LibreFrame
           ctx.restore
         end
 
+        if alignment == :inside
+          if ctx.copy_path.to_a.map(&:class).include?(Cairo::PathCurveTo)
+            puts "ignored inside stroke setting due to PathCurveTo segfault bug"
+          else
+            ctx.save
+            ctx.set_source_rgba(1, 1, 1, 1)
+            ctx.set_operator(Cairo::OPERATOR_DEST_IN)
+            ctx.fill_preserve
+            ctx.restore
+          end
+        end
+
         ctx.pop_group_to_source
-        ctx.paint
+        ctx.paint  
       end
 
       def from_sketch_json_hash(hash, loader)
