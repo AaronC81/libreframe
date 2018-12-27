@@ -41,7 +41,7 @@ module LibreFrame
         property_box = Gtk::Box.new(:vertical, 1)
         property_box.add_child(Gtk::Label.new(prop))
 
-          setter = (prop.to_s + '=').to_sym
+        setter = (prop.to_s + '=').to_sym
 
         if prop_val.is_a?(String) || prop_val.is_a?(Numeric)
           entry = Gtk::Entry.new
