@@ -102,6 +102,13 @@ module LibreFrame
         nil
       end
 
+      # Returns a list of properties which may be set on this object. Currently
+      # this is just a list of symbols, but this could be developed much
+      # further.
+      def properties
+        [:do_object_id, :position, :width, :height, :rotation]
+      end
+
       def inspect
         "<##{self.class} (#{do_object_id}), #{position} #{width}x#{height}"
       end

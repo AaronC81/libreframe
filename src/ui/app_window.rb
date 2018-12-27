@@ -1,11 +1,12 @@
 require 'gtk3'
 require_relative 'design_canvas'
+require_relative 'toolbox'
 
 module LibreFrame
   module UI
     # The main application window in which designs may be edited.
     class AppWindow < Gtk::Window
-      attr_accessor :canvas
+      attr_accessor :canvas, :toolbox, :hbox
 
       def initialize
         super
@@ -16,9 +17,18 @@ module LibreFrame
         end
 
         @canvas = DesignCanvas.new
-        canvas.set_size_request 100, 100
-        add(canvas)
-        canvas.show
+        canvas.set_size_request 800, 500
+
+        @toolbox = Toolbox.new
+
+        canvas.toolbox = toolbox
+
+        @hbox = Gtk::Box.new(:horizontal, 3)
+        hbox.add(toolbox)
+        hbox.add(canvas)
+
+        add(hbox)
+        show_all
       end
     end
   end

@@ -7,7 +7,7 @@ module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
-      attr_accessor :view, :selection, :elements
+      attr_accessor :view, :selection, :elements, :toolbox
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
@@ -35,9 +35,9 @@ module LibreFrame
             el.contains_position?(point, view) 
           end
 
-          p clicked_element
-
           @selection = clicked_element
+          toolbox.draw_properties(@selection) unless toolbox.nil?
+
           queue_draw
         end
 
