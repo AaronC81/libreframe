@@ -33,11 +33,11 @@ module LibreFrame
           # "Ask" higher-level elements about clicks first
           clicked_element = elements.flat_map(&:onedimensionalize).reverse.find do |el|
             point = Core::Point.new(button_event.x, button_event.y)
-            el.contains_position?(point, view) 
+            el.contains_position?(point) 
           end
 
           @selection = clicked_element
-          toolbox.draw_properties(@selection, view) unless toolbox.nil?
+          toolbox.draw_properties(@selection) unless toolbox.nil?
 
           queue_draw
         end
@@ -56,7 +56,7 @@ module LibreFrame
       
         # Draw elements
         elements.each do |element|
-          element.cairo_draw(ctx, view)
+          element.cairo_draw(ctx)
         end
 
         ctx.new_path
@@ -64,7 +64,7 @@ module LibreFrame
         # Draw selection bounding box
         unless selection.nil?
           ctx.set_source_rgba(*SELECTION_BOX_COLOR.to_cairo)
-          pos = selection.absolute_position(view)
+          pos = selection.absolute_position
           ctx.rectangle(pos.x, pos.y, selection.width, selection.height)
           ctx.fill
         end

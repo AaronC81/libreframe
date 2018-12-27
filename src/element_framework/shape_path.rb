@@ -17,10 +17,10 @@ module LibreFrame
         @closed = true
       end
 
-      def cairo_draw(ctx, view)        
+      def cairo_draw(ctx)        
         # TODO: Implement decent RELATIVE rotation, might want a rotation offset
         # Should translate stuff so midpt is 0,0 then rotate and translate back
-        translated_origin_point = absolute_position(view)
+        translated_origin_point = absolute_position
 
         # Iterate over each point
         points.length.times do |i|
@@ -59,8 +59,8 @@ module LibreFrame
         end
         ctx.close_path if closed?  
 
-        cairo_draw_styles(ctx, view)
-        cairo_draw_children(ctx, view)
+        cairo_draw_styles(ctx)
+        cairo_draw_children(ctx)
       end
 
       def from_sketch_json_hash(hash, loader)
@@ -79,8 +79,8 @@ module LibreFrame
       # most likely (expensive) unless we gave elements a method to just plot
       # their path and not actually apply any style.
       # https://cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-extents
-      def contains_position?(point, view)
-        translated_position = absolute_position(view)
+      def contains_position?(point)
+        translated_position = absolute_position
 
         # TODO: Sizing ignores zoom
         # TODO: Disgustingly long line

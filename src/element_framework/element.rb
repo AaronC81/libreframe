@@ -5,6 +5,7 @@ module LibreFrame
     # TODO: Rotation
     class Element
       attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation
+      attr_writer :view
 
       def initialize
         @children = []
@@ -15,6 +16,11 @@ module LibreFrame
         @position = nil
         @width = nil
         @height = nil
+      end
+
+      # Gets the view associated with this element.
+      def view
+        @view ? @view : (parent ? parent.view : nil)
       end
 
       # A boolean indicating whether this element can have children.
@@ -46,16 +52,16 @@ module LibreFrame
       # implementation simply throws an exception, so subclasses MUST NOT
       # invoke super in their implementations. If the element has children, it
       # should usually draw them too using #cairo_draw_children.
-      def cairo_draw(context, view)
+      def cairo_draw(context)
         raise 'this element cannot be drawn (tried to draw abstract Element)'
       end
 
       # Draws all of the children of this element onto a Gtk3 Cairo graphics
       # context by invoking their #cairo_draw implementations.
-      def cairo_draw_children(context, view)
+      def cairo_draw_children(context)
         children.each do |c|
           context.new_path
-          c.cairo_draw(context, view)
+          c.cairo_draw(context)
         end
       end
 
@@ -67,7 +73,7 @@ module LibreFrame
 
       # Returns the absolute position of this element with respect to a
       # particular view.
-      def absolute_position(view)
+      def absolute_position
         view.tp(position) + offset
       end
 
@@ -81,7 +87,7 @@ module LibreFrame
       # Returns a boolean indicating whether this element contains a certain
       # click position when rendered in a view. By default, this is
       # unimplemented and always returns false.
-      def contains_position?(point, view)
+      def contains_position?(point)
         false
       end
 

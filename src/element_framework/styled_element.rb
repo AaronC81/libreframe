@@ -15,9 +15,9 @@ module LibreFrame
 
       # Invokes #draw on all of the fills and strokes which this element has, as
       # well as those of any parents.
-      def cairo_draw_styles(ctx, view)
+      def cairo_draw_styles(ctx)
         if !parent.nil? && parent.is_a?(StyledElement)
-          parent.cairo_draw_styles(ctx, view)
+          parent.cairo_draw_styles(ctx)
         end
 
         fills.each do |fill|

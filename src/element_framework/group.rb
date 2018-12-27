@@ -8,8 +8,8 @@ module LibreFrame
         super
       end
 
-      def cairo_draw(ctx, view)
-        cairo_draw_children(ctx, view)
+      def cairo_draw(ctx)
+        cairo_draw_children(ctx)
       end
     end
   end

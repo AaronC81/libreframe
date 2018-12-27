@@ -11,18 +11,18 @@ module LibreFrame
         super
       end
 
-      def cairo_draw(ctx, view)        
-        abs_pos = absolute_position(view)
+      def cairo_draw(ctx)        
+        abs_pos = absolute_position
         ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
 
         if fills.empty?
           ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR.to_cairo)
           ctx.fill_preserve
         else
-          cairo_draw_styles(ctx, view)
+          cairo_draw_styles(ctx)
         end
 
-        cairo_draw_children(ctx, view)
+        cairo_draw_children(ctx)
       end
     end
   end

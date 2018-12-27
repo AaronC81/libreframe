@@ -12,7 +12,7 @@ module LibreFrame
       end
 
       # Given an element, draws boxes for properties for the element.
-      def draw_properties(element, view)
+      def draw_properties(element)
         # Clear all children
         children.each { |child| remove(child) }
 
@@ -22,17 +22,17 @@ module LibreFrame
           show_all
         else
           element.properties.each do |prop|
-            el = element_for_property(element, prop, view)
+            el = element_for_property(element, prop)
             add_child(el)
             show_all
           end
         end
       end
 
-      def element_for_property(element, prop, view)
+      def element_for_property(element, prop)
         # If the property requires an argument, it must be a view
         if element.method(prop).arity == 1
-          prop_val = element.send(prop, view)
+          prop_val = element.send(prop, element.view)
         else
           prop_val = element.send(prop)
         end
