@@ -22,6 +22,7 @@ module LibreFrame
         @toolbox = Toolbox.new
 
         canvas.toolbox = toolbox
+        toolbox.canvas = canvas
 
         @hbox = Gtk::Box.new(:horizontal, 3)
         hbox.add(toolbox)

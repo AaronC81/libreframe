@@ -5,6 +5,8 @@ module LibreFrame
   module UI
     # Allows viewing and editing of selected object properties.
     class Toolbox < Gtk::Box
+      attr_accessor :canvas
+
       def initialize
         super(:vertical, 5)
 
@@ -46,7 +48,7 @@ module LibreFrame
         if prop_val.is_a?(String) || prop_val.is_a?(Numeric)
           entry = Gtk::Entry.new
           entry.text = prop_val.to_s
-          entry.signal_connect 'changed' do
+          handler = Proc.new do
             if prop_val.is_a?(String)
               element.send(setter, entry.text)
             elsif prop_val.is_a?(Integer)
@@ -54,7 +56,10 @@ module LibreFrame
             elsif prop_val.is_a?(Float)
               element.send(setter, entry.text.to_f)
             end
+
+            canvas.queue_draw
           end
+          entry.signal_connect 'changed', &handler
 
           property_box.add_child(entry)
 
@@ -65,12 +70,16 @@ module LibreFrame
           x_entry.text = prop_val.x.to_s
           x_entry.signal_connect 'changed' do
             element.send(setter, Core::Point.new(x_entry.text.to_f, y_entry.text.to_f))
+
+            canvas.queue_draw
           end
           property_box.add_child(x_entry)
 
           y_entry.text = prop_val.y.to_s
           y_entry.signal_connect 'changed' do
             element.send(setter, Core::Point.new(x_entry.text.to_f, y_entry.text.to_f))
+
+            canvas.queue_draw
           end
           property_box.add_child(y_entry)
         # TODO: Boolean?
