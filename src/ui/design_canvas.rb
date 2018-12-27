@@ -36,7 +36,7 @@ module LibreFrame
           end
 
           @selection = clicked_element
-          toolbox.draw_properties(@selection) unless toolbox.nil?
+          toolbox.draw_properties(@selection, view) unless toolbox.nil?
 
           queue_draw
         end
@@ -52,7 +52,7 @@ module LibreFrame
         ctx.set_source_rgba(*BACKGROUND_COLOR.to_cairo)
         ctx.rectangle(0, 0, 10000, 10000) # TODO: Actually use widget size
         ctx.fill
-
+      
         # Draw elements
         elements.each do |element|
           element.cairo_draw(ctx, view)
