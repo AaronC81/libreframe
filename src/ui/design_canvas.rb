@@ -7,7 +7,8 @@ module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
-      attr_accessor :view, :selection, :elements, :toolbox
+      attr_accessor :selection, :elements, :toolbox
+      attr_reader :view
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
