@@ -71,6 +71,13 @@ module LibreFrame
         view.tp(position) + offset
       end
 
+      def absolute_position=(value)
+        # TODO: THIS NEEEEDS TO ACCESS THE VIEW SOMEHOW.
+        # I think we need a better solution than throwing a parameter around
+        # everywhere
+        @position = value - offset
+      end
+
       # Returns a boolean indicating whether this element contains a certain
       # click position when rendered in a view. By default, this is
       # unimplemented and always returns false.
@@ -106,7 +113,7 @@ module LibreFrame
       # this is just a list of symbols, but this could be developed much
       # further.
       def properties
-        [:do_object_id, :position, :width, :height, :rotation]
+        [:do_object_id, :absolute_position, :width, :height, :rotation]
       end
 
       def inspect
