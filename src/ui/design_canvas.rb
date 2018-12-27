@@ -34,6 +34,8 @@ module LibreFrame
             el.contains_position?(point, view) 
           end
 
+          p clicked_element
+
           @selection = clicked_element
           queue_draw
         end
@@ -62,8 +64,8 @@ module LibreFrame
 
         # Draw debug points, if debug mode enabled
         if view.debug?
+          ctx.set_source_rgba(*DEBUG_POINT_COLOR.to_cairo)
           view.debug_points.each do |point|
-            ctx.set_source_rgba(*DEBUG_POINT_COLOR.to_cairo)
             ctx.rectangle(point.x, point.y, 1, 1)
             ctx.fill
           end
