@@ -40,6 +40,8 @@ module LibreFrame
 
           # Draw a curve for this point
           # TODO: The rounding isn't "intense" enough for some corners
+          #       Sketch probably transforms the radius somehow, maybe based on
+          #       what the size of the corner round will be
           ctx.line_to(moved_towards_previous_point.x, moved_towards_previous_point.y)
           #ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
           ctx.curve_to(
