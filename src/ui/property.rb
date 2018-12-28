@@ -78,6 +78,9 @@ module LibreFrame
           end
           property_box.add(entry_y)
 
+        when NilClass
+          property_box.add(Gtk::Label.new("(nil)"))
+
         else
           raise 'unknown property type'
         end
