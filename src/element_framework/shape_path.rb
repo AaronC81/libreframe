@@ -66,7 +66,7 @@ module LibreFrame
       def handles
         # TODO: When stuff moves, it needs to resize the contained element to
         # keep everything within {1, 1}.
-        super + points.map do |point|
+        canvas.selection == self ? super + points.map do |point|
           UI::Handles::Handle.new(
             UI::Property.new(
               'Point',
@@ -74,7 +74,7 @@ module LibreFrame
               ->x{ point.point = (x - absolute_position) / Core::Point.new(width, height) }
             )
           )
-        end
+        end : []
       end
 
       def from_sketch_json_hash(hash, loader)
