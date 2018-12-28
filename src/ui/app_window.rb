@@ -17,7 +17,8 @@ module LibreFrame
         end
 
         @canvas = DesignCanvas.new
-        canvas.set_size_request 800, 500
+        # TODO: Resize with window
+        canvas.set_size_request 1200, 800
 
         @toolbox = Toolbox.new
 
