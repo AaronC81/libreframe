@@ -79,6 +79,8 @@ module LibreFrame
         view.tp(position) + offset
       end
 
+      # Sets the absolute position of this element by mapping it to a relative
+      # one and setting that instead.
       def absolute_position=(value)
         @position = value - offset
       end
