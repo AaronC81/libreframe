@@ -129,6 +129,11 @@ module LibreFrame
         ]
       end
 
+      # Returns the handles which should be rendered along with this element.
+      def handles
+        []
+      end
+
       def inspect
         "<##{self.class} (#{do_object_id}), #{position} #{width}x#{height}"
       end
