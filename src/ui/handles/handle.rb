@@ -1,4 +1,4 @@
-require_relative '../core/color'
+require_relative '../../core/color'
 
 module LibreFrame
   module UI
