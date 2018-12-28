@@ -42,6 +42,17 @@ module LibreFrame
         end
       end
 
+      def /(other)
+        case other
+        when Point
+          Point.new(x / other.x, y / other.y)
+        when Numeric
+          Point.new(x / other, y / other)
+        else
+          raise
+        end
+      end
+
       def to_s
         "(#{x}, #{y})"
       end
