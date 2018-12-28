@@ -3,6 +3,8 @@ require_relative '../core/point'
 module LibreFrame
   module UI
     # Deals with drag operations on a canvas.
+    # TODO: What about movement outside of the current artboard?
+    #       That should probably cause a reparent
     class DragController
       attr_reader :start_position
       def dragging?; @dragging; end
@@ -17,11 +19,13 @@ module LibreFrame
         end
       end
 
+      # Signals the beginning of a drag.
       def start_dragging(start_position)
         @dragging = true
         @start_position = start_position
       end
 
+      # Returns the current position of the element which was dragged.
       def current_position
         @start_position + delta
       end
