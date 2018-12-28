@@ -5,32 +5,33 @@ require_relative 'src/element_framework/group'
 require_relative 'src/element_framework/shape_path'
 require_relative 'src/element_framework/curve_point'
 require_relative 'src/styling/fill'
-require_relative 'src/styling/solid_stroke'
-require_relative 'src/serialization/loader'
+require_relative 'src/styling/stroke'
+require_relative 'src/serialization/sketch_loader'
 
 require 'json'
 require 'pp'
 
 include LibreFrame
 
-# TODO: Strokes
-loader = Serialization::Loader.new($stdout, {
+loader = Serialization::SketchLoader.new($stdout, {
   'rectangle' => ElementFramework::Rectangle,
   'artboard' => ElementFramework::Artboard,
   'group' => ElementFramework::Group,
   'fill' => Styling::Fill,
+  'border' => Styling::Stroke,
   'curvePoint' => ElementFramework::CurvePoint,
-  'shapePath' => ElementFramework::ShapePath
+  'shapePath' => ElementFramework::ShapePath,
+  'shapeGroup' => ElementFramework::Group
 })
 
-hash = JSON.parse(File.read('data/g_translate.json'))
+hash = JSON.parse(File.read('data/showcase.json'))
 artboards = hash['layers'].map { |x| loader.dispatch(x) }
 p artboards
 
 w = UI::AppWindow.new
-w.canvas.queue_element_draw(
-  artboards
-)
+artboards.each { |a| a.view = w.canvas.view }
+w.canvas.elements = artboards
+w.canvas.view.debug = false
 w.show_all
 
 Gtk.main
