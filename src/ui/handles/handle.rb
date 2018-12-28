@@ -10,12 +10,33 @@ module LibreFrame
         FILL_COLOR = Core::Color.new(1, 1, 1, 1)
         STROKE_COLOR = Core::Color.new(1, 0, 0, 1)
 
-        attr_accessor :property, :size, :style
+        attr_accessor :property, :size, :style, :other_properties
 
-        def initialize(property, size=3, style=:square)
+        def initialize(property, other_properties=nil, size=3, style=:square)
           @property = property
+          @other_properties = other_properties || []
           @size = size
           @style = style
+        end
+
+        def absolute_position
+          property.getter.()
+        end
+
+        def absolute_position=(value)
+          property.setter.(value)
+        end
+
+        def properties
+          @other_properties
+        end
+
+        def width
+          size
+        end
+
+        def height
+          size
         end
 
         # Draws this handle onto a canvas.

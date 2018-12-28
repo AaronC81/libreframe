@@ -9,7 +9,7 @@ module LibreFrame
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
       attr_accessor :selection, :elements, :toolbox
-      attr_reader :view, :drag
+      attr_reader :view, :drag, :handles
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
@@ -39,9 +39,22 @@ module LibreFrame
         end
 
         signal_connect 'button-press-event' do |_, button_event|
+          point = Core::Point.new(button_event.x, button_event.y)
+
+          clicked_handle = handles.find do |h|
+            h.contains_position?(point)
+          end
+
+          unless clicked_handle.nil?
+            puts "A handle was clicked!"
+
+            drag.start_dragging(clicked_handle.absolute_position)
+            @selection = clicked_handle
+            next
+          end 
+
           # "Ask" higher-level elements about clicks first
           clicked_element = elements.flat_map(&:onedimensionalize).reverse.find do |el|
-            point = Core::Point.new(button_event.x, button_event.y)
             el.contains_position?(point) 
           end
 
@@ -72,7 +85,7 @@ module LibreFrame
         ctx.fill
       
         # Draw elements
-        handles = []
+        @handles = []
         elements.each do |element|
           element.cairo_draw(ctx)
           handles.push(*element.handles)
