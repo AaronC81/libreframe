@@ -54,10 +54,7 @@ module LibreFrame
         end
 
         signal_connect 'button-release-event' do |_, button_event|
-          puts "release"
           drag.reset
-
-          #queue_draw
         end
 
         add_events :button_press_mask # TODO: NEED MOTION/RELEASE?
