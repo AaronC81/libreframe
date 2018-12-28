@@ -8,7 +8,7 @@ module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
-      attr_accessor :selection, :elements, :toolbox
+      attr_accessor :selection, :elements, :toolbox, :selection_handle
       attr_reader :view, :drag, :handles
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
@@ -31,7 +31,11 @@ module LibreFrame
           # TODO: This doesn't update the toolbox
           if drag.dragging?
             drag.record_position(motion_event.x, motion_event.y) 
-            @selection.absolute_position = drag.current_position
+            if @selection_handle
+              @selection_handle.absolute_position = drag.current_position
+            else
+              @selection.absolute_position = drag.current_position
+            end
             toolbox.draw_properties(@selection) unless toolbox.nil?
           end
           
@@ -49,7 +53,7 @@ module LibreFrame
             puts "A handle was clicked!"
 
             drag.start_dragging(clicked_handle.absolute_position)
-            @selection = clicked_handle
+            @selection_handle = clicked_handle
             next
           end 
 
@@ -59,6 +63,7 @@ module LibreFrame
           end
 
           @selection = clicked_element
+          @selection_handle = nil
           toolbox.draw_properties(@selection) unless toolbox.nil?
 
           drag.start_dragging(@selection.absolute_position) unless @selection.nil?
