@@ -7,7 +7,7 @@ module LibreFrame
     # TODO: Rotation
     class Element
       attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation
-      attr_writer :view
+      attr_writer :view, :canvas
 
       def initialize
         @children = []
@@ -23,6 +23,11 @@ module LibreFrame
       # Gets the view associated with this element.
       def view
         @view ? @view : (parent ? parent.view : nil)
+      end
+
+      # Gets the canvas on which this element is drawn.
+      def canvas
+        @canvas ? @canvas : (parent ? parent.canvas : nil)
       end
 
       # A boolean indicating whether this element can have children.
