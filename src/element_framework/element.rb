@@ -131,7 +131,7 @@ module LibreFrame
 
       # Returns the handles which should be rendered along with this element.
       def handles
-        []
+        children.flat_map(&:handles)
       end
 
       def inspect
