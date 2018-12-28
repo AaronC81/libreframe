@@ -40,7 +40,8 @@ module LibreFrame
         def contains_position?(point)
           case style
           when :square
-            # TODO
+            (property.getter.().x - point.x).abs <= size &&  
+              (property.getter.().y - point.y).abs <= size 
           else
             raise 'invalid handle style'
           end
