@@ -72,8 +72,10 @@ module LibreFrame
         ctx.fill
       
         # Draw elements
+        handles = []
         elements.each do |element|
           element.cairo_draw(ctx)
+          handles.push(*element.handles)
         end
 
         ctx.new_path
@@ -86,6 +88,11 @@ module LibreFrame
           ctx.fill
         end
 
+        # Draw any handles
+        handles.each do |handle|
+          handle.cairo_draw(ctx)
+        end
+      
         # Draw debug points, if debug mode enabled
         if view.debug?
           ctx.set_source_rgba(*DEBUG_POINT_COLOR.to_cairo)
