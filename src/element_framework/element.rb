@@ -1,3 +1,5 @@
+require_relative '../ui/property'
+
 module LibreFrame
   module ElementFramework
     # A basic, abstract element which is part of a document. Elements may have
@@ -119,7 +121,12 @@ module LibreFrame
       # this is just a list of symbols, but this could be developed much
       # further.
       def properties
-        [:do_object_id, :absolute_position, :width, :height, :rotation]
+        [
+          UI::Property.from_attribute('Height', self, :height),
+          UI::Property.from_attribute('Width', self, :width),
+          UI::Property.from_attribute('Position', self, :absolute_position),
+          UI::Property.from_attribute('Rotation', self, :rotation)
+        ]
       end
 
       def inspect

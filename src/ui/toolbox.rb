@@ -8,7 +8,7 @@ module LibreFrame
       attr_accessor :canvas
 
       def initialize
-        super(:vertical, 5)
+        super(:vertical, 25)
 
         add_child(Gtk::Label.new("Select something"))
       end
@@ -24,8 +24,8 @@ module LibreFrame
           show_all
         else
           element.properties.each do |prop|
-            el = element_for_property(element, prop)
-            add_child(el)
+            prop.canvas = canvas
+            add_child(prop.element)
             show_all
           end
         end
