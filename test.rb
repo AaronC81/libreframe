@@ -29,7 +29,7 @@ artboards = hash['layers'].map { |x| loader.dispatch(x) }
 p artboards
 
 w = UI::AppWindow.new
-artboards.each { |a| a.view = w.canvas.view }
+artboards.each { |a| a.view = w.canvas.view; a.canvas = w.canvas }
 w.canvas.elements = artboards
 w.canvas.view.debug = false
 w.show_all
