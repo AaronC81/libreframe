@@ -8,6 +8,8 @@ module LibreFrame
     class AppWindow < Gtk::Window
       attr_accessor :canvas, :toolbox, :hbox
 
+      TOOLBOX_WIDTH = 200
+
       def initialize
         super
 
@@ -17,14 +19,15 @@ module LibreFrame
         end
 
         @canvas = DesignCanvas.new
-        # TODO: Resize with window
-        canvas.set_size_request(1200, 800)
-
         @toolbox = Toolbox.new
-        toolbox.set_size_request(200, toolbox.allocation.height)
 
         canvas.toolbox = toolbox
         toolbox.canvas = canvas
+
+        canvas.set_size_request(400, 400)
+        canvas.hexpand = true
+        canvas.vexpand = true
+        toolbox.set_size_request(TOOLBOX_WIDTH, allocation.height)
 
         @hbox = Gtk::Box.new(:horizontal, 3)
         hbox.add(toolbox)
