@@ -4,7 +4,6 @@ require_relative '../core/geometry'
 module LibreFrame
   module ElementFramework
     # A shape path.
-    # TODO: Implement corner radius
     class ShapePath < StyledElement
       # TODO: VERY BAD IMPLEMENTATION WHICH DISCARDS MOST INFO
       attr_accessor :points

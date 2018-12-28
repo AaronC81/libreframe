@@ -3,8 +3,6 @@ module LibreFrame
     # A class specifying a method of stroking. 
     # Note that .sketch files refer to these as borders, while Cairo (and
     # hence LibreFrame) call them strokes.
-    # TODO: Support inner/outer/middle
-    # TODO: Thickness
     class Stroke
       attr_writer :enabled
       def enabled?; @enabled; end
@@ -30,7 +28,6 @@ module LibreFrame
 
         ctx.set_source_rgba(*color.to_cairo)
 
-        # TODO: Inner not supported
         actual_thickness = ((alignment == :outside || alignment == :inside) ? thickness * 2 : thickness)
         ctx.set_line_width(actual_thickness)
         ctx.stroke_preserve 
@@ -77,7 +74,7 @@ module LibreFrame
 
         # Sketch calls inside/outside/center "position", but here it's called
         # alignment to avoid any confusion with points
-        @alignment = [:inside, :center, :outside][hash['position']] # TODO Is this correct?
+        @alignment = [:inside, :center, :outside][hash['position']]
 
         @thickness = hash['thickness'].to_f
       end

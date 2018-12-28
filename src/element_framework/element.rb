@@ -80,9 +80,6 @@ module LibreFrame
       end
 
       def absolute_position=(value)
-        # TODO: THIS NEEEEDS TO ACCESS THE VIEW SOMEHOW.
-        # I think we need a better solution than throwing a parameter around
-        # everywhere
         @position = value - offset
       end
 
