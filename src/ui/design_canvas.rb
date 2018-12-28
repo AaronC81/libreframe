@@ -2,13 +2,14 @@ require 'gtk3'
 require_relative 'view'
 require_relative '../core/point'
 require_relative '../core/color'
+require_relative 'drag_controller'
 
 module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
       attr_accessor :selection, :elements, :toolbox
-      attr_reader :view
+      attr_reader :view, :drag
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
@@ -18,16 +19,24 @@ module LibreFrame
         super
 
         @view = View.new(Core::Point.new(0, 0), 1)
+        @drag = DragController.new
 
         signal_connect 'draw' do
           draw
         end
 
-        #signal_connect 'motion-notify-event' do |_, motion_event|
-        #  @view.origin_point.x = motion_event.x
-        #  @view.origin_point.y = motion_event.y
-        #  queue_draw
-        #end
+        # TODO: Have a drag tolerence where nothing happens for tiny accidental
+        # drags which should've been selections
+        signal_connect 'motion-notify-event' do |_, motion_event|
+          # TODO: This doesn't update the toolbox
+          if drag.dragging?
+            drag.record_position(motion_event.x, motion_event.y) 
+            @selection.absolute_position = drag.current_position
+            toolbox.draw_properties(@selection) unless toolbox.nil?
+          end
+          
+          queue_draw
+        end
 
         signal_connect 'button-press-event' do |_, button_event|
           # "Ask" higher-level elements about clicks first
@@ -39,10 +48,21 @@ module LibreFrame
           @selection = clicked_element
           toolbox.draw_properties(@selection) unless toolbox.nil?
 
+          drag.start_dragging(@selection.absolute_position) unless @selection.nil?
+
           queue_draw
         end
 
-        set_events :button_press_mask
+        signal_connect 'button-release-event' do |_, button_event|
+          puts "release"
+          drag.reset
+
+          #queue_draw
+        end
+
+        add_events :button_press_mask # TODO: NEED MOTION/RELEASE?
+        add_events :button_release_mask
+        add_events :pointer_motion_mask
       end
 
       # Draws this canvas' elements.
