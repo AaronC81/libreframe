@@ -10,9 +10,10 @@ module LibreFrame
         FILL_COLOR = Core::Color.new(1, 1, 1, 1)
         STROKE_COLOR = Core::Color.new(1, 0, 0, 1)
 
-        attr_accessor :property, :size, :style, :other_properties
+        attr_accessor :element, :property, :size, :style, :other_properties
 
-        def initialize(property, other_properties=nil, size=3, style=:square)
+        def initialize(element, property, other_properties=nil, size=3, style=:square)
+          @element = element
           @property = property
           @other_properties = other_properties || []
           @size = size
