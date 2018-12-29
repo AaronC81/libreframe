@@ -93,7 +93,7 @@ module LibreFrame
         @handles = []
         elements.each do |element|
           element.cairo_draw(ctx)
-          handles.push(*element.handles)
+          handles.push(*element.handles.select { |h| h.element == selection })
         end
 
         ctx.new_path
