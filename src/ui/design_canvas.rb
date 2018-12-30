@@ -36,6 +36,7 @@ module LibreFrame
             else
               @selection.absolute_position = drag.current_position
             end
+            @selection.reproportion rescue nil
             toolbox.draw_properties(@selection) unless toolbox.nil?
           end
           

@@ -100,6 +100,40 @@ module LibreFrame
         # TODO: Disgustingly long line
         point.x >= translated_position.x && point.x <= translated_position.x + width && point.y >= translated_position.y && point.y <= translated_position.y + height
       end
+
+      # Re-scales this ShapePath so that, for each element of #points,
+      # CurvePoint#point is in the range {0, 1}. This involves resizing and 
+      # moving the ShapePath.
+      def reproportion
+        # Translate all points into absolute points
+        absolute_points = points.map do |curve_point|
+          Core::Point.new(
+            absolute_position.x + curve_point.point.x * width,
+            absolute_position.y + curve_point.point.y * height
+          )
+        end
+
+        # Find new position and size
+        new_position = Core::Point.new(
+          absolute_points.map(&:x).min,
+          absolute_points.map(&:y).min
+        )
+        new_width = absolute_points.map(&:x).max - new_position.x
+        new_height = absolute_points.map(&:y).max - new_position.y
+
+        # Translate points back into relative using new width and height
+        points.zip(absolute_points).map do |curve_point, point|
+          # TODO: Does not consider curveFrom/to (fix when those actually become used)
+          curve_point.point = Core::Point.new(
+            (point.x - new_position.x) / new_width,
+            (point.y - new_position.y) / new_height
+          )
+        end
+
+        self.absolute_position = new_position
+        @width = new_width
+        @height = new_height
+      end
     end
   end
 end
