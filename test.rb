@@ -13,16 +13,7 @@ require 'pp'
 
 include LibreFrame
 
-loader = Files::SketchPageLoader.new($stdout, {
-  'rectangle' => ElementFramework::Rectangle,
-  'artboard' => ElementFramework::Artboard,
-  'group' => ElementFramework::Group,
-  'fill' => Styling::Fill,
-  'border' => Styling::Stroke,
-  'curvePoint' => ElementFramework::CurvePoint,
-  'shapePath' => ElementFramework::ShapePath,
-  'shapeGroup' => ElementFramework::Group
-})
+loader = Files::SketchPageLoader.new($stdout, )
 
 hash = JSON.parse(File.read('data/showcase.json'))
 artboards = hash['layers'].map { |x| loader.dispatch(x) }

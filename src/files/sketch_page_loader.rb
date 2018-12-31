@@ -6,10 +6,21 @@ module LibreFrame
     # Contains methods to convert Sketch 43+ JSON data into ElementFramework
     # instances.
     class SketchPageLoader
+      SKETCH_CLASS_MAP = {
+        'rectangle' => ElementFramework::Rectangle,
+        'artboard' => ElementFramework::Artboard,
+        'group' => ElementFramework::Group,
+        'fill' => Styling::Fill,
+        'border' => Styling::Stroke,
+        'curvePoint' => ElementFramework::CurvePoint,
+        'shapePath' => ElementFramework::ShapePath,
+        'shapeGroup' => ElementFramework::Group
+      }
+
       attr_accessor :classes, :log_stream
 
-      def initialize(log_stream, classes)
-        @classes = classes
+      def initialize(log_stream, classes=nil)
+        @classes = classes || SKETCH_CLASS_MAP
         @log_stream = log_stream
       end
 
