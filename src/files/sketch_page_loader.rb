@@ -2,10 +2,10 @@ require_relative '../core/point'
 require_relative '../core/audit_hash'
 
 module LibreFrame
-  module Serialization
+  module Files
     # Contains methods to convert Sketch 43+ JSON data into ElementFramework
     # instances.
-    class SketchLoader
+    class SketchPageLoader
       attr_accessor :classes, :log_stream
 
       def initialize(log_stream, classes)

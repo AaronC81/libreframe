@@ -6,14 +6,14 @@ require_relative 'src/element_framework/shape_path'
 require_relative 'src/element_framework/curve_point'
 require_relative 'src/styling/fill'
 require_relative 'src/styling/stroke'
-require_relative 'src/serialization/sketch_loader'
+require_relative 'src/files/sketch_page_loader'
 
 require 'json'
 require 'pp'
 
 include LibreFrame
 
-loader = Serialization::SketchLoader.new($stdout, {
+loader = Files::SketchPageLoader.new($stdout, {
   'rectangle' => ElementFramework::Rectangle,
   'artboard' => ElementFramework::Artboard,
   'group' => ElementFramework::Group,
