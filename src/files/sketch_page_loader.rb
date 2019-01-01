@@ -14,7 +14,8 @@ module LibreFrame
         'border' => Styling::Stroke,
         'curvePoint' => ElementFramework::CurvePoint,
         'shapePath' => ElementFramework::ShapePath,
-        'shapeGroup' => ElementFramework::Group
+        'shapeGroup' => ElementFramework::Group,
+        'page' => ElementFramework::Page
       }
 
       attr_accessor :classes, :log_stream
