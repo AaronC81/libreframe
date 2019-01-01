@@ -4,7 +4,7 @@ require_relative '../extensions/module'
 module LibreFrame
   module ElementFramework
     # A page which contains any number of artboards. A document may have several
-    # pages.
+    # pages. The children of a page are +Artboard+ instances.
     class Page < Element
       # TODO: Many properties not implemented
       bool_accessor :locked, :visible
@@ -14,6 +14,10 @@ module LibreFrame
 
         @locked = hash['isLocked']
         @visible = hash['isVisible']
+      end
+
+      def cairo_draw(ctx)
+        cairo_draw_children(ctx)
       end
     end
   end
