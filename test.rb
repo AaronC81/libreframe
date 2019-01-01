@@ -7,21 +7,19 @@ require_relative 'src/element_framework/curve_point'
 require_relative 'src/styling/fill'
 require_relative 'src/styling/stroke'
 require_relative 'src/files/sketch_page_loader'
+require_relative 'src/files/sketch_document'
 
 require 'json'
 require 'pp'
 
 include LibreFrame
 
-loader = Files::SketchPageLoader.new($stdout, )
-
-hash = JSON.parse(File.read('data/showcase.json'))
-artboards = hash['layers'].map { |x| loader.dispatch(x) }
-p artboards
+doc_loader = Files::SketchDocument.load_from_file('/home/aaron/Downloads/Test.sketch', Files::SketchPageLoader.new($stdout))
+doc_loader.metadata
 
 w = UI::AppWindow.new
-artboards.each { |a| a.view = w.canvas.view; a.canvas = w.canvas }
-w.canvas.elements = artboards
+doc_loader.metadata.pages.first.children.each { |a| a.view = w.canvas.view; a.canvas = w.canvas }
+w.canvas.elements = doc_loader.metadata.pages.first.children
 w.canvas.view.debug = false
 w.show_all
 
