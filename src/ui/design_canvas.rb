@@ -8,7 +8,7 @@ module LibreFrame
   module UI
     # A canvas on which designs are displayed.
     class DesignCanvas < Gtk::DrawingArea
-      attr_accessor :selection, :elements, :toolbox, :selection_handle
+      attr_accessor :selection, :page, :toolbox, :selection_handle
       attr_reader :view, :drag, :handles
 
       DEBUG_POINT_COLOR = Core::Color.new(1, 0, 0, 1)
@@ -64,7 +64,7 @@ module LibreFrame
           end 
 
           # Check if an element was clicked if a handle wasn't
-          clicked_element = elements.flat_map(&:onedimensionalize).reverse.find do |el|
+          clicked_element = page.children.flat_map(&:onedimensionalize).reverse.find do |el|
             el.contains_position?(point) 
           end
 
@@ -101,10 +101,8 @@ module LibreFrame
       
         # Draw elements
         @handles = []
-        elements.each do |element|
-          element.cairo_draw(ctx)
-          handles.push(*element.handles.select { |h| h.element == selection })
-        end
+        page.cairo_draw(ctx)
+        handles.push(*page.handles.select { |h| h.element == selection })
 
         # Begin a new path for UI elements
         ctx.new_path

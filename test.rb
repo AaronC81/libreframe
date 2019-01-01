@@ -19,7 +19,7 @@ doc_loader.metadata
 
 w = UI::AppWindow.new
 doc_loader.metadata.pages.first.children.each { |a| a.view = w.canvas.view; a.canvas = w.canvas }
-w.canvas.elements = doc_loader.metadata.pages.first.children
+w.canvas.page = doc_loader.metadata.pages.first
 w.canvas.view.debug = false
 w.show_all
 
