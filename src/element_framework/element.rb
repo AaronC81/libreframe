@@ -7,6 +7,7 @@ module LibreFrame
     # TODO: Rotation
     class Element
       attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation, :name
+      bool_reader :accepts_children
       attr_writer :view, :canvas
 
       def initialize
@@ -23,9 +24,6 @@ module LibreFrame
       def canvas
         @canvas ? @canvas : (parent ? parent.canvas : nil)
       end
-
-      # A boolean indicating whether this element can have children.
-      def accepts_children?; @accepts_children; end
 
       # Adds a child to this element. The element's parent is set to this
       # element.
