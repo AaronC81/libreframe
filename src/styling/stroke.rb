@@ -26,7 +26,7 @@ module LibreFrame
         # stroke position hacky stuff
         ctx.push_group
 
-        ctx.set_source_rgba(*color.to_cairo)
+        ctx.set_source_rgba(*color)
 
         actual_thickness = ((alignment == :outside || alignment == :inside) ? thickness * 2 : thickness)
         ctx.set_line_width(actual_thickness)

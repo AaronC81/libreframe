@@ -50,9 +50,9 @@ module LibreFrame
             size * 2,
             size * 2
           )
-          ctx.set_source_rgba(*FILL_COLOR.to_cairo)
+          ctx.set_source_rgba(*FILL_COLOR)
           ctx.fill_preserve
-          ctx.set_source_rgba(*STROKE_COLOR.to_cairo)
+          ctx.set_source_rgba(*STROKE_COLOR)
           ctx.stroke
 
           ctx.restore

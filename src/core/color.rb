@@ -16,6 +16,9 @@ module LibreFrame
       def to_cairo
         [r, g, b, a]
       end
+
+      # Enable usage with splat operator
+      alias to_a to_cairo
     end
   end
 end

@@ -16,7 +16,7 @@ module LibreFrame
         ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
 
         if fills.empty?
-          ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR.to_cairo)
+          ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR)
           ctx.fill_preserve
         else
           cairo_draw_styles(ctx)

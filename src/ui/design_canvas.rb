@@ -40,7 +40,7 @@ module LibreFrame
         ctx = window.create_cairo_context
         
         # Draw background
-        ctx.set_source_rgba(*BACKGROUND_COLOR.to_cairo)
+        ctx.set_source_rgba(*BACKGROUND_COLOR)
         ctx.rectangle(0, 0, 10000, 10000) # TODO: Actually use widget size
         ctx.fill
       
@@ -54,7 +54,7 @@ module LibreFrame
 
         # Draw selection bounding box
         unless selection.nil?
-          ctx.set_source_rgba(*SELECTION_BOX_COLOR.to_cairo)
+          ctx.set_source_rgba(*SELECTION_BOX_COLOR)
           pos = selection.absolute_position
           ctx.rectangle(pos.x, pos.y, selection.width, selection.height)
           ctx.fill
@@ -67,7 +67,7 @@ module LibreFrame
       
         # Draw debug points, if debug mode enabled
         if view.debug?
-          ctx.set_source_rgba(*DEBUG_POINT_COLOR.to_cairo)
+          ctx.set_source_rgba(*DEBUG_POINT_COLOR)
           view.debug_points.each do |point|
             ctx.rectangle(point.x, point.y, 1, 1)
             ctx.fill
