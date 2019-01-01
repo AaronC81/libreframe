@@ -9,7 +9,7 @@ module LibreFrame
       # TODO: Many properties not implemented
       bool_accessor :locked, :visible
 
-      def from_sketch_json_hash(hash)
+      def from_sketch_json_hash(hash, loader)
         super
 
         @locked = hash['isLocked']
