@@ -1,4 +1,5 @@
 require_relative '../core/point'
+require_relative '../extensions/module'
 
 module LibreFrame
   module UI
@@ -7,7 +8,7 @@ module LibreFrame
     #       That should probably cause a reparent
     class DragController
       attr_reader :start_position
-      def dragging?; @dragging; end
+      bool_reader :dragging
 
       # Signals that a drag has reached a point.
       def record_position(x, y)
