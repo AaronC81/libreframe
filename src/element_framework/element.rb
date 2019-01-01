@@ -6,18 +6,12 @@ module LibreFrame
     # children unless #accepts_children is false.
     # TODO: Rotation
     class Element
-      attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation
+      attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation, :name
       attr_writer :view, :canvas
 
       def initialize
         @children = []
-        @parent = nil
         @accepts_children = true
-        @do_object_id = nil
-        @rotation = nil
-        @position = nil
-        @width = nil
-        @height = nil
       end
 
       # Gets the view associated with this element.
@@ -109,6 +103,7 @@ module LibreFrame
         @height = hash['frame']['height'].to_f
         @do_object_id = hash['do_objectID']
         @rotation = hash['rotation']
+        @name = hash['name']
 
         # Populate children
         unless hash['layers'].nil?
