@@ -15,68 +15,77 @@ module LibreFrame
       SELECTION_BOX_COLOR = Core::Color.new(0, 0, 1, 0.4)
       BACKGROUND_COLOR = Core::Color.new(0.9, 0.9, 0.9, 1)
 
+      # Creates a new +DesignCanvas+.
       def initialize
         super
 
+        # Initialize instance variables
         @view = View.new(Core::Point.new(0, 0), 1)
         @drag = DragController.new
 
+        # Connect signal to redraw on resize/move/etc
         signal_connect 'draw' do
           draw
         end
 
-        # TODO: Have a drag tolerence where nothing happens for tiny accidental
-        # drags which should've been selections
+        # Connect mouse movement signal
         signal_connect 'motion-notify-event' do |_, motion_event|
-          # TODO: This doesn't update the toolbox
           if drag.dragging?
+            # If dragging, add drag point
             drag.record_position(motion_event.x, motion_event.y) 
+
+            # Move the dragged element
             if @selection_handle
               @selection_handle.absolute_position = drag.current_position
             else
               @selection.absolute_position = drag.current_position
             end
-            @selection.reproportion rescue nil
+
+            # Reproportion the element if required
+            @selection.reproportion if @selection.respond_to?(:reproportion)
+
+            # Redraw toolbox, providing one is linked to this canvas
             toolbox.draw_properties(@selection) unless toolbox.nil?
           end
           
+          # Trigger a GTK redraw of the canvas
           queue_draw
         end
 
+        # Connect signal for mouse click
         signal_connect 'button-press-event' do |_, button_event|
+          # Handle a handle being clicked (ayyy)
           point = Core::Point.new(button_event.x, button_event.y)
-
-          clicked_handle = handles.find do |h|
-            h.contains_position?(point)
-          end
-
+          clicked_handle = handles.find { |h| h.contains_position?(point) }
           unless clicked_handle.nil?
-            puts "A handle was clicked!"
-
             drag.start_dragging(clicked_handle.absolute_position)
             @selection_handle = clicked_handle
             next
           end 
 
-          # "Ask" higher-level elements about clicks first
+          # Check if an element was clicked if a handle wasn't
           clicked_element = elements.flat_map(&:onedimensionalize).reverse.find do |el|
             el.contains_position?(point) 
           end
 
+          # Set selection properties (and reset handle)
           @selection = clicked_element
           @selection_handle = nil
-          toolbox.draw_properties(@selection) unless toolbox.nil?
 
+          # Redraw toolbox and start dragging if there's a selection
+          toolbox.draw_properties(@selection) unless toolbox.nil?
           drag.start_dragging(@selection.absolute_position) unless @selection.nil?
 
+          # Trigger GTK redraw
           queue_draw
         end
 
+        # Connect signal to reset drag when button up
         signal_connect 'button-release-event' do |_, button_event|
           drag.reset
         end
 
-        add_events :button_press_mask # TODO: NEED MOTION/RELEASE?
+        add_events :button_press_mask
         add_events :button_release_mask
         add_events :pointer_motion_mask
       end
@@ -97,6 +106,7 @@ module LibreFrame
           handles.push(*element.handles.select { |h| h.element == selection })
         end
 
+        # Begin a new path for UI elements
         ctx.new_path
 
         # Draw selection bounding box
