@@ -88,6 +88,8 @@ module LibreFrame
       def absolute_position
         view.tp(position) + offset
       rescue
+        # TODO: Sort this out
+        puts "warning: Element#absolute_position threw"
         Core::Point.new(0, 0)
       end
 
