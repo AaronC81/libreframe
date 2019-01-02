@@ -72,8 +72,16 @@ module LibreFrame
       # context by invoking their #cairo_draw implementations.
       def cairo_draw_children(context)
         children.each do |c|
+          context.push_group
           context.new_path
+
+          context.translate(c.center.x, c.center.y)
+          context.rotate(c.total_rotation)
+          context.translate(-c.center.x, -c.center.y)
+
           c.cairo_draw(context)
+          context.pop_group_to_source
+          context.paint
         end
       end
 
@@ -122,7 +130,7 @@ module LibreFrame
         @width = hash['frame']['width'].to_f
         @height = hash['frame']['height'].to_f
         @do_object_id = hash['do_objectID']
-        @rotation = hash['rotation']
+        @rotation = hash['rotation'].to_f
         @name = hash['name']
 
         # Populate children
