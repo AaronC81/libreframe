@@ -77,7 +77,7 @@ module LibreFrame
             UI::Property.new(
               'Point',
               ->{ absolute_position + point.point * Core::Point.new(width, height) },
-              ->x{ point.point = (x - absolute_position) / Core::Point.new(width, height) }
+              ->x{ point.point = (x - absolute_position) / Core::Point.new(width, height) } # TODO: Undo rotation
             )
           )
         end
