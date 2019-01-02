@@ -54,10 +54,20 @@ module LibreFrame
 
         # Draw selection bounding box
         unless selection.nil?
+          ctx.push_group
+          ctx.new_path
           ctx.set_source_rgba(*SELECTION_BOX_COLOR)
-          pos = selection.absolute_position
-          ctx.rectangle(pos.x, pos.y, selection.width, selection.height)
+          ctx.translate(selection.center.x, selection.center.y)
+          ctx.rotate(selection.total_rotation)
+          ctx.translate(-selection.center.x, -selection.center.y)
+          ctx.rectangle(
+            selection.absolute_position.x,
+            selection.absolute_position.y,
+            selection.width, selection.height
+          )
           ctx.fill
+          ctx.pop_group_to_source
+          ctx.paint
         end
 
         # Draw any handles
