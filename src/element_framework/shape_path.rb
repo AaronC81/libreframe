@@ -19,6 +19,8 @@ module LibreFrame
 
       # Converts the +CurvePoint+ instances inside +#points+ to absolute 
       # instances of +Point+.
+      # Note that these points are NOT rotated. Rotation is handled by Cairo,
+      # except for handles.
       # @return [Array<Core::Point>] An array of absolute points.
       def absolute_points
         points.map do |cv_pt|
@@ -66,12 +68,14 @@ module LibreFrame
       end
 
       def handles
-        super + points.map do |point|
+        super + points.map do |curve_point|
           UI::Handles::Handle.new(self,
             UI::Property.new(
               'Point',
-              ->{ absolute_position + point.point * Core::Point.new(width, height) },
-              ->x{ point.point = (x - absolute_position) / Core::Point.new(width, height) } # TODO: Undo rotation
+              ->{ (
+                absolute_position + curve_point.point * Core::Point.new(width, height)
+              ).rotate_around_point(total_rotation, center) },
+              ->x{ curve_point.point = ((x - absolute_position) / Core::Point.new(width, height)) } # TODO: Undo rotation
             )
           )
         end
