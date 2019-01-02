@@ -26,7 +26,6 @@ module LibreFrame
       def to_s
         "(#{x}, #{y})"
       end
-
       alias inspect to_s
     end
   end
