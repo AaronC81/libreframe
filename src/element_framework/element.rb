@@ -47,6 +47,19 @@ module LibreFrame
         parents.map(&:position).inject(Core::Point.new(0, 0), :+)
       end
 
+      # Gets the rotation which must be applied to this element based on the
+      # rotation of its parent elements.
+      def rotation_offset
+        parents = []
+        curr = parent
+        until curr.nil?
+          parents << curr
+          curr = curr.parent
+        end
+
+        parents.map(&:rotation).sum
+      end
+
       # Draws this element onto a Gtk3 Cairo graphics context. This abstract
       # implementation simply throws an exception, so subclasses MUST NOT
       # invoke super in their implementations. If the element has children, it
@@ -74,6 +87,8 @@ module LibreFrame
       # particular view.
       def absolute_position
         view.tp(position) + offset
+      rescue
+        Core::Point.new(0, 0)
       end
 
       # Sets the absolute position of this element by mapping it to a relative
