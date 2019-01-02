@@ -132,6 +132,14 @@ module LibreFrame
         children.flat_map(&:handles)
       end
 
+      # Calculates the centre of this element, based on its size and position.
+      def center
+        Core::Point.new(
+          absolute_position.x + width / 2,
+          absolute_position.y + height / 2
+        )
+      end
+
       def inspect
         "<##{self.class} (#{do_object_id}), #{position} #{width}x#{height}"
       end
