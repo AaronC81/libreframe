@@ -9,47 +9,17 @@ module LibreFrame
         @y = y
       end
 
-      def +(other)
-        case other
-        when Point
-          Point.new(x + other.x, y + other.y)
-        when Numeric
-          Point.new(x + other, y + other)
-        else
-          raise
-        end
-      end
-
-      def -(other)
-        case other
-        when Point
-          Point.new(x - other.x, y - other.y)
-        when Numeric
-          Point.new(x - other, y - other)
-        else
-          raise
-        end
-      end
-
-      def *(other)
-        case other
-        when Point
-          Point.new(x * other.x, y * other.y)
-        when Numeric
-          Point.new(x * other, y * other)
-        else
-          raise
-        end
-      end
-
-      def /(other)
-        case other
-        when Point
-          Point.new(x / other.x, y / other.y)
-        when Numeric
-          Point.new(x / other, y / other)
-        else
-          raise
+      # Define the four mathematical boolean operators
+      [:+, :-, :*, :/].each do |op|
+        define_method(op) do |other|
+          case other
+          when Point
+            Point.new(x.send(op, other.x), y.send(op, other.y))
+          when Numeric
+            Point.new(x.send(op, other), y.send(op, other))
+          else
+            raise
+          end
         end
       end
 
