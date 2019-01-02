@@ -4,12 +4,22 @@ module LibreFrame
     class Point
       attr_accessor :x, :y
 
+      # Creates a new +Point+.
+      # @param x [Numeric] The x coordinate of this point.
+      # @param y [Numeric] The y coordinate of this point.
       def initialize(x, y)
         @x = x
         @y = y
       end
 
-      # Define the four mathematical boolean operators
+      # @!method +(other)
+      #   Add another point, or a scalar, to this point.
+      # @!method -(other)
+      #   Subtract another point, or a scalar, from this point.
+      # @!method *(other)
+      #   Multiply another point, or a scalar, with this point.
+      # @!method /(other)
+      #   Divide another point, or a scalar, with this point.
       [:+, :-, :*, :/].each do |op|
         define_method(op) do |other|
           case other
