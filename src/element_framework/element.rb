@@ -142,9 +142,7 @@ module LibreFrame
         nil
       end
 
-      # Returns a list of properties which may be set on this object. Currently
-      # this is just a list of symbols, but this could be developed much
-      # further.
+      # Returns a list of properties which may be set on this object.
       def properties
         [
           # TODO: Join these together like position
