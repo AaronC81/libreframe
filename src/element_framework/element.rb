@@ -158,7 +158,7 @@ module LibreFrame
       # @param ctx [Cairo::Context] The Cairo context to mutate.
       def cairo_apply_rotation(ctx)
         ctx.translate(center.x, center.y)
-        ctx.rotate(total_rotation)
+        ctx.rotate(rotation)
         ctx.translate(-center.x, -center.y)
       end
 
