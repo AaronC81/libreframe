@@ -99,6 +99,11 @@ module LibreFrame
         @position = value - offset
       end
 
+      # Returns the total rotation of this element with respect to its parent.
+      def total_rotation
+        rotation + rotation_offset
+      end
+
       # Returns a boolean indicating whether this element contains a certain
       # click position when rendered in a view. By default, this is
       # unimplemented and always returns false.
