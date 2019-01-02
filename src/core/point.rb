@@ -33,6 +33,27 @@ module LibreFrame
         end
       end
 
+      # Rotates a point a number of radians around a different point.
+      # @param angle [Float] The radians to rotate.
+      # @param point [Point] The point around which to rotate.
+      # @return [Point] A rotated point.
+      def rotate_around_point(angle, point)
+        Point.new(x - point.x, y - point.y).rotate_around_origin(angle) + point
+      end
+
+      # Rotates a point a number of radians around the origin.
+      # @param angle [Float] The radians to rotate.
+      # @return [Point] A rotated point.
+      def rotate_around_origin(angle)
+        sin_of_angle = Math.sin(angle)
+        cos_of_angle = Math.cos(angle)
+
+        Point.new(
+          x * cos_of_angle - y * sin_of_angle,
+          x * sin_of_angle + y * cos_of_angle
+        )
+      end
+
       def to_s
         "(#{x}, #{y})"
       end
