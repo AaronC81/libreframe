@@ -75,9 +75,7 @@ module LibreFrame
           context.push_group
           context.new_path
 
-          context.translate(c.center.x, c.center.y)
-          context.rotate(c.total_rotation)
-          context.translate(-c.center.x, -c.center.y)
+          c.cairo_apply_rotation(context)
 
           c.cairo_draw(context)
           context.pop_group_to_source
@@ -155,6 +153,15 @@ module LibreFrame
           UI::Property.from_attribute('Position', self, :absolute_position),
           UI::Property.from_attribute('Rotation', self, :rotation)
         ]
+      end
+
+      # Given a Cairo context, applies a transformation matrix which rotates
+      # elements to be drawn around the center of this element.
+      # @param ctx [Cairo::Context] The Cairo context to mutate.
+      def cairo_apply_rotation(ctx)
+        ctx.translate(center.x, center.y)
+        ctx.rotate(total_rotation)
+        ctx.translate(-center.x, -center.y)
       end
 
       # Returns the handles which should be rendered along with this element.

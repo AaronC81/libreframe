@@ -57,9 +57,7 @@ module LibreFrame
           ctx.push_group
           ctx.new_path
           ctx.set_source_rgba(*SELECTION_BOX_COLOR)
-          ctx.translate(selection.center.x, selection.center.y)
-          ctx.rotate(selection.total_rotation)
-          ctx.translate(-selection.center.x, -selection.center.y)
+          selection.cairo_apply_rotation(ctx)
           ctx.rectangle(
             selection.absolute_position.x,
             selection.absolute_position.y,
