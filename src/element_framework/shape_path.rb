@@ -58,10 +58,6 @@ module LibreFrame
             moved_towards_next_point.x,
             moved_towards_next_point.y
           )
-
-          view.debug_points << moved_towards_previous_point
-          view.debug_points << current_point
-          view.debug_points << moved_towards_next_point
         end
         ctx.close_path if closed?  
 
