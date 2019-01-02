@@ -17,26 +17,32 @@ module LibreFrame
         @closed = true
       end
 
+      # Converts the +CurvePoint+ instances inside +#points+ to absolute 
+      # instances of +Point+.
+      # @return [Array<Core::Point>] An array of absolute points.
+      def absolute_points
+        points.map do |cv_pt|
+          absolute_position + cv_pt.point * Core::Point.new(width, height)
+        end
+      end
+
       def cairo_draw(ctx)        
         # TODO: Implement decent RELATIVE rotation, might want a rotation offset
         # Should translate stuff so midpt is 0,0 then rotate and translate back
-        translated_origin_point = absolute_position
 
         # Iterate over each point
-        points.length.times do |i|
-          # Find points
-          previous_point = points[i - 1]
-          current_point = points[i]
-          next_point = points[(i + 1) % points.length]
+        absolute_points.length.times do |i|
+          # Get current point, as a CurvePoint
+          current_curve_point = points[i]
 
-          # Translate each point from relative ratio to actual point
-          translated_current_point = translated_origin_point + current_point.point * Core::Point.new(width, height)
-          translated_previous_point = translated_origin_point + previous_point.point * Core::Point.new(width, height)
-          translated_next_point = translated_origin_point + next_point.point * Core::Point.new(width, height)
+          # Find absolute points
+          previous_point = absolute_points[i - 1]
+          current_point = absolute_points[i]
+          next_point = absolute_points[(i + 1) % points.length]
 
           # Move the point towards the previous and next points
-          moved_towards_previous_point = Core::Geometry.change_line_length(translated_previous_point, translated_current_point, -1 * (current_point.corner_radius || 0))
-          moved_towards_next_point = Core::Geometry.change_line_length(translated_next_point, translated_current_point, -1 * (current_point.corner_radius || 0))
+          moved_towards_previous_point = Core::Geometry.change_line_length(previous_point, current_point, -1 * (current_curve_point.corner_radius || 0))
+          moved_towards_next_point = Core::Geometry.change_line_length(next_point, current_point, -1 * (current_curve_point.corner_radius || 0))
 
           # Draw a curve for this point
           # TODO: The rounding isn't "intense" enough for some corners
@@ -45,8 +51,8 @@ module LibreFrame
           ctx.line_to(moved_towards_previous_point.x, moved_towards_previous_point.y)
           #ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
           ctx.curve_to(
-            translated_current_point.x,
-            translated_current_point.y,
+            current_point.x,
+            current_point.y,
             moved_towards_next_point.x,
             moved_towards_next_point.y,
             moved_towards_next_point.x,
@@ -54,7 +60,7 @@ module LibreFrame
           )
 
           view.debug_points << moved_towards_previous_point
-          view.debug_points << translated_current_point
+          view.debug_points << current_point
           view.debug_points << moved_towards_next_point
         end
         ctx.close_path if closed?  
@@ -105,14 +111,6 @@ module LibreFrame
       # CurvePoint#point is in the range {0, 1}. This involves resizing and 
       # moving the ShapePath.
       def reproportion
-        # Translate all points into absolute points
-        absolute_points = points.map do |curve_point|
-          Core::Point.new(
-            absolute_position.x + curve_point.point.x * width,
-            absolute_position.y + curve_point.point.y * height
-          )
-        end
-
         # Find new position and size
         new_position = Core::Point.new(
           absolute_points.map(&:x).min,
