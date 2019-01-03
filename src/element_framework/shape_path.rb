@@ -17,6 +17,14 @@ module LibreFrame
         @closed = true
       end
 
+      # Given a point inside this +ShapePath+ with coordinates between 0 and 1,
+      # such as a +CurvePoint+, converts it to an absolute point.
+      # @param point [Core::Point] The point to convert.
+      # @return [Core::Point] The converted point.
+      def make_absolute(point)
+        absolute_position + point * Core::Point.new(width, height)
+      end
+
       # Converts the +CurvePoint+ instances inside +#points+ to absolute 
       # instances of +Point+.
       # Note that these points are NOT rotated. Rotation is handled by Cairo,
@@ -24,7 +32,7 @@ module LibreFrame
       # @return [Array<Core::Point>] An array of absolute points.
       def absolute_points
         points.map do |cv_pt|
-          absolute_position + cv_pt.point * Core::Point.new(width, height)
+          make_absolute(cv_pt.point)
         end
       end
 
@@ -32,7 +40,9 @@ module LibreFrame
         # Iterate over each point
         absolute_points.length.times do |i|
           # Get current point, as a CurvePoint
+          previous_curve_point = points[i - 1]
           current_curve_point = points[i]
+          next_curve_point = points[(i + 1) % points.length]
 
           # Find absolute points
           previous_point = absolute_points[i - 1]
@@ -53,18 +63,29 @@ module LibreFrame
           # TODO: The rounding isn't "intense" enough for some corners
           #       Sketch probably transforms the radius somehow, maybe based on
           #       what the size of the corner round will be
-          ctx.line_to(
-            moved_towards_previous_point.x,
-            moved_towards_previous_point.y
-          )
-          ctx.curve_to(
-            current_point.x,
-            current_point.y,
-            moved_towards_next_point.x,
-            moved_towards_next_point.y,
-            moved_towards_next_point.x,
-            moved_towards_next_point.y
-          )
+          if current_curve_point.has_curve_to? || current_curve_point.has_curve_from?
+            ctx.curve_to(
+              make_absolute(current_curve_point.curve_from).x,
+              make_absolute(current_curve_point.curve_from).y,
+              make_absolute(next_curve_point.curve_to).x,
+              make_absolute(next_curve_point.curve_to).y,
+              make_absolute(next_curve_point.point).x,
+              make_absolute(next_curve_point.point).y
+            )
+          else
+            ctx.line_to(
+              moved_towards_previous_point.x,
+              moved_towards_previous_point.y
+            )
+            ctx.curve_to(
+              current_point.x,
+              current_point.y,
+              moved_towards_next_point.x,
+              moved_towards_next_point.y,
+              moved_towards_next_point.x,
+              moved_towards_next_point.y
+            )
+          end
         end
         ctx.close_path if closed?  
 
