@@ -7,7 +7,7 @@ module LibreFrame
     # A shape path.
     class ShapePath < StyledElement
       # TODO: VERY BAD IMPLEMENTATION WHICH DISCARDS MOST INFO
-      attr_accessor :points
+      attr_accessor :points, :boolean_operation
       attr_writer :closed
       def closed?; @closed; end
 
@@ -96,6 +96,7 @@ module LibreFrame
         end
 
         @closed = hash['isClosed']
+        @boolean_operation = hash['booleanOperation'].to_i
       end
 
       # TODO: Cairo has a method for hit detection along a path which could be
