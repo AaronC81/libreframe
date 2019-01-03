@@ -41,15 +41,14 @@ module LibreFrame
         end
 
         if alignment == :inside
-          if ctx.copy_path.to_a.map(&:class).include?(Cairo::PathCurveTo)
-            puts "ignored inside stroke setting due to PathCurveTo segfault bug"
-          else
-            ctx.save
-            ctx.set_source_rgba(1, 1, 1, 1)
-            ctx.set_operator(Cairo::OPERATOR_DEST_IN)
-            ctx.fill_preserve
-            ctx.restore
-          end
+          # TODO: Inconsistent segfaults
+          puts "ignored inside stroke setting due to segfault bug"
+          
+          #ctx.save
+          #ctx.set_source_rgba(1, 1, 1, 1)
+          #ctx.set_operator(Cairo::OPERATOR_DEST_IN)
+          #ctx.fill_preserve
+          #ctx.restore
         end
 
         ctx.pop_group_to_source
