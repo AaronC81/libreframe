@@ -28,10 +28,7 @@ module LibreFrame
         end
       end
 
-      def cairo_draw(ctx)        
-        # TODO: Implement decent RELATIVE rotation, might want a rotation offset
-        # Should translate stuff so midpt is 0,0 then rotate and translate back
-
+      def cairo_draw(ctx)
         # Iterate over each point
         absolute_points.length.times do |i|
           # Get current point, as a CurvePoint
@@ -43,15 +40,23 @@ module LibreFrame
           next_point = absolute_points[(i + 1) % points.length]
 
           # Move the point towards the previous and next points
-          moved_towards_previous_point = Core::Geometry.change_line_length(previous_point, current_point, -1 * (current_curve_point.corner_radius || 0))
-          moved_towards_next_point = Core::Geometry.change_line_length(next_point, current_point, -1 * (current_curve_point.corner_radius || 0))
+          moved_towards_previous_point = Core::Geometry.change_line_length(
+            previous_point, current_point,
+            -1 * (current_curve_point.corner_radius || 0)
+          )
+          moved_towards_next_point = Core::Geometry.change_line_length(
+            next_point, current_point,
+            -1 * (current_curve_point.corner_radius || 0)
+          )
 
           # Draw a curve for this point
           # TODO: The rounding isn't "intense" enough for some corners
           #       Sketch probably transforms the radius somehow, maybe based on
           #       what the size of the corner round will be
-          ctx.line_to(moved_towards_previous_point.x, moved_towards_previous_point.y)
-          #ctx.line_to(moved_towards_next_point.x, moved_towards_next_point.y)
+          ctx.line_to(
+            moved_towards_previous_point.x,
+            moved_towards_previous_point.y
+          )
           ctx.curve_to(
             current_point.x,
             current_point.y,
