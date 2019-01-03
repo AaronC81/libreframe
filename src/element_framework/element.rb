@@ -4,7 +4,6 @@ module LibreFrame
   module ElementFramework
     # A basic, abstract element which is part of a document. Elements may have
     # children unless #accepts_children is false.
-    # TODO: Rotation
     class Element
       attr_accessor :children, :parent, :position, :width, :height, :do_object_id, :rotation, :name
       bool_reader :accepts_children
