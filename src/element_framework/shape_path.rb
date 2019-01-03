@@ -6,7 +6,6 @@ module LibreFrame
   module ElementFramework
     # A shape path.
     class ShapePath < StyledElement
-      # TODO: VERY BAD IMPLEMENTATION WHICH DISCARDS MOST INFO
       attr_accessor :points, :boolean_operation
       attr_writer :closed
       def closed?; @closed; end
