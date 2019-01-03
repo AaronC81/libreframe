@@ -15,6 +15,12 @@ module LibreFrame
       end
 
       def cairo_draw(ctx)
+        # FIXME
+        if color == nil
+          puts "fill color nil due to a loader bug, skipping draw"
+          return
+        end
+
         ctx.set_source_rgba(*color)
         ctx.fill_preserve
       end
