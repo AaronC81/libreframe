@@ -71,16 +71,18 @@ module LibreFrame
       # Draws all of the children of this element onto a Gtk3 Cairo graphics
       # context by invoking their #cairo_draw implementations.
       def cairo_draw_children(context)
+        context.push_group
+        context.new_path
+
         children.each do |c|
-          context.push_group
-          context.new_path
-
+          context.save
           c.cairo_apply_rotation(context)
-
           c.cairo_draw(context)
-          context.pop_group_to_source
-          context.paint
+          context.restore
         end
+
+        context.pop_group_to_source
+        context.paint
       end
 
       # Represents this element and all of its children, and of the childrens'
