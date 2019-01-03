@@ -146,6 +146,7 @@ module LibreFrame
       def properties
         [
           # TODO: Join these together like position
+          UI::Property.from_attribute('ID', self, :do_object_id),
           UI::Property.from_attribute('Width', self, :width),
           UI::Property.from_attribute('Height', self, :height),
           UI::Property.from_attribute('Position', self, :absolute_position),
