@@ -75,7 +75,8 @@ module LibreFrame
               ->{ (
                 absolute_position + curve_point.point * Core::Point.new(width, height)
               ).rotate_around_point(total_rotation, center) },
-              ->x{ curve_point.point = ((x - absolute_position) / Core::Point.new(width, height)) } # TODO: Undo rotation
+              # TODO: Need to "pin" the rest of the shape so it doesn't move around strangely
+              ->x{ curve_point.point = ((x.rotate_around_point(-total_rotation, center) - absolute_position) / Core::Point.new(width, height)) } # TODO: Undo rotation
             )
           )
         end
