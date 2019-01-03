@@ -9,14 +9,15 @@ module LibreFrame
       class Handle
         FILL_COLOR = Core::Color.new(1, 1, 1, 1)
         STROKE_COLOR = Core::Color.new(1, 0, 0, 1)
+        SIZE = 3
+        STROKE_WIDTH = 2
 
-        attr_accessor :element, :property, :size, :style, :other_properties
+        attr_accessor :element, :property, :style, :other_properties
 
-        def initialize(element, property, other_properties=nil, size=3, style=:square)
+        def initialize(element, property, other_properties=nil, style=:square)
           @element = element
           @property = property
           @other_properties = other_properties || []
-          @size = size
           @style = style
         end
 
@@ -33,11 +34,11 @@ module LibreFrame
         end
 
         def width
-          size
+          SIZE
         end
 
         def height
-          size
+          SIZE
         end
 
         # Draws this handle onto a canvas.
@@ -45,14 +46,15 @@ module LibreFrame
           ctx.save
           ctx.new_path
           ctx.rectangle(
-            property.getter.().x - size,
-            property.getter.().y - size,
-            size * 2,
-            size * 2
+            property.getter.().x - SIZE,
+            property.getter.().y - SIZE,
+            SIZE * 2,
+            SIZE * 2
           )
           ctx.set_source_rgba(*FILL_COLOR)
           ctx.fill_preserve
           ctx.set_source_rgba(*STROKE_COLOR)
+          ctx.line_width = STROKE_WIDTH
           ctx.stroke
 
           ctx.restore
@@ -62,8 +64,8 @@ module LibreFrame
         def contains_position?(point)
           case style
           when :square
-            (property.getter.().x - point.x).abs <= size &&  
-              (property.getter.().y - point.y).abs <= size 
+            (property.getter.().x - point.x).abs <= SIZE &&  
+              (property.getter.().y - point.y).abs <= SIZE 
           else
             raise 'invalid handle style'
           end
