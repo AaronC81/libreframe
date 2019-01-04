@@ -59,10 +59,11 @@ module LibreFrame
         parents.map(&:rotation).sum
       end
 
-      # Returns a path of points constituing the path drawn to draw this shape
-      # onto a canvas.
-      # @return [Array<Core::Point>] The points required to plot this.
-      def drawing_path
+      # Returns an array of paths of points constituing the paths drawn to draw
+      # this shape onto a canvas. Multiple paths will be drawn using an 
+      # even-odd operator, allowing holes to be cut out of shapes.
+      # @return [Array<Array<Core::Point>>] The paths required to plot this.
+      def drawing_paths
         raise 'this element cannot be pathed (tried to path abstract Element)'
       end
 
