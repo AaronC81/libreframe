@@ -11,6 +11,15 @@ module LibreFrame
         super
       end
 
+      def drawing_paths
+        [[
+          absolute_position,
+          Point.new(absolute_position.x + view.sl(width), absolute_position.y),
+          Point.new(absolute_position.x + view.sl(width), absolute_position.y + view.sl(height)),
+          Point.new(absolute_position.x, absolute_position.y + view.sl(height))
+        ]]
+      end
+
       def cairo_draw(ctx)        
         abs_pos = absolute_position
         ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
