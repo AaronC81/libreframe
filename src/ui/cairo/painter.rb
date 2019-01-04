@@ -1,5 +1,5 @@
-require '../../core/pathing'
-require '../../element_framework/styled_element'
+require_relative '../../core/pathing'
+require_relative '../../element_framework/styled_element'
 
 module LibreFrame
   module UI
