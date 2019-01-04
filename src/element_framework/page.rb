@@ -16,6 +16,10 @@ module LibreFrame
         @visible = hash['isVisible']
       end
 
+      def drawing_paths
+        []
+      end
+
       def cairo_draw(ctx)
         cairo_draw_children(ctx)
       end
