@@ -64,7 +64,8 @@ module LibreFrame
       # even-odd operator, allowing holes to be cut out of shapes.
       # @return [Array<Array<Core::Point>>] The paths required to plot this.
       def drawing_paths
-        raise 'this element cannot be pathed (tried to path abstract Element)'
+        puts "WARNING: Default #drawing_paths implementation used"
+        []
       end
 
       # Instructs a drawing path painter whether to automatically draw children.
