@@ -23,7 +23,7 @@ module LibreFrame
           end
 
           # Apply styling
-          element.cairo_apply_styles(ctx)
+          element.cairo_draw_styles(ctx)
 
           # Draw children, if requested
           if element.draw_child_paths?

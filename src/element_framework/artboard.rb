@@ -21,7 +21,7 @@ module LibreFrame
         ]]
       end
 
-      def cairo_apply_styles(ctx)
+      def cairo_draw_styles(ctx)
         ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR)
         ctx.fill_preserve
       end
