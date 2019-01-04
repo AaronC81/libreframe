@@ -73,12 +73,6 @@ module LibreFrame
         true
       end
 
-      # Applies styling to an element, given a Cairo context. This is a stub
-      # function for this operation.
-      def cairo_apply_styles(ctx)
-        nil
-      end
-
       # Draws this element onto a Gtk3 Cairo graphics context. This abstract
       # implementation simply throws an exception, so subclasses MUST NOT
       # invoke super in their implementations. If the element has children, it
