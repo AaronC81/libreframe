@@ -20,6 +20,11 @@ module LibreFrame
         ]]
       end
 
+      def cairo_apply_styles(ctx)
+        ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR)
+        ctx.fill_preserve
+      end
+
       def cairo_draw(ctx)        
         abs_pos = absolute_position
         ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
