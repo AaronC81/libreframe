@@ -59,6 +59,13 @@ module LibreFrame
         parents.map(&:rotation).sum
       end
 
+      # Returns a path of points constituing the path drawn to draw this shape
+      # onto a canvas.
+      # @return [Array<Core::Point>] The points required to plot this.
+      def drawing_path
+        raise 'this element cannot be pathed (tried to path abstract Element)'
+      end
+
       # Draws this element onto a Gtk3 Cairo graphics context. This abstract
       # implementation simply throws an exception, so subclasses MUST NOT
       # invoke super in their implementations. If the element has children, it
