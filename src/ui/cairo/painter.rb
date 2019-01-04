@@ -19,7 +19,7 @@ module LibreFrame
           
           # Plot each path
           paths.each do |path|
-            Pathing.cairo_plot(ctx, path)
+            Core::Pathing.cairo_plot(ctx, path)
           end
 
           # Apply styling
