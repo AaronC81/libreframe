@@ -54,6 +54,12 @@ module LibreFrame
         )
       end
 
+      # Converts this path to an array.
+      # @return [Array<Float>] An array in the form [x, y].
+      def to_a
+        [x, y]
+      end
+
       def to_s
         "(#{x}, #{y})"
       end
