@@ -2,13 +2,12 @@ module LibreFrame
   module Core
     module Pathing
       # Given a Cairo context and a point path, plots the point path onto the
-      # Cairo context.
+      # Cairo context. The path is NOT reset; this is the caller's
+      # responsibility if desired.
       # @param ctx [Cairo::Context] The Cairo context to use. The current path
       #   is destroyed.
       # @param path [Array<Core::Point>] The path to follow.
       def self.cairo_plot(ctx, path)
-        ctx.new_path
-
         # Don't do anything if path is empty
         return if path.empty?
 
