@@ -1,5 +1,6 @@
 require_relative 'element'
 require_relative '../core/color'
+require_relative '../core/point'
 
 module LibreFrame
   module ElementFramework
@@ -14,9 +15,9 @@ module LibreFrame
       def drawing_paths
         [[
           absolute_position,
-          Point.new(absolute_position.x + view.sl(width), absolute_position.y),
-          Point.new(absolute_position.x + view.sl(width), absolute_position.y + view.sl(height)),
-          Point.new(absolute_position.x, absolute_position.y + view.sl(height))
+          Core::Point.new(absolute_position.x + view.sl(width), absolute_position.y),
+          Core::Point.new(absolute_position.x + view.sl(width), absolute_position.y + view.sl(height)),
+          Core::Point.new(absolute_position.x, absolute_position.y + view.sl(height))
         ]]
       end
 
