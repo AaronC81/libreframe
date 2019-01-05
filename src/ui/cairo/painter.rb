@@ -14,6 +14,9 @@ module LibreFrame
         end
 
         def draw_element(element)
+          # Begin a new path
+          ctx.new_path
+
           # Get the paths for an element
           paths = element.drawing_paths
           
@@ -21,6 +24,10 @@ module LibreFrame
           paths.each do |path|
             Core::Pathing.cairo_plot(ctx, path)
           end
+
+          # Close the path
+          # TODO: Might not always want this?
+          ctx.close_path
 
           # Apply styling
           element.cairo_draw_styles(ctx)
