@@ -44,7 +44,9 @@ module LibreFrame
       def drawing_paths
         # TODO: Doesn't support curves or rounded corners or anything yet
         [
-          absolute_points
+          absolute_points.map do |pt|
+            pt.rotate_around_point(total_rotation, center)
+          end
         ]
       end
 
