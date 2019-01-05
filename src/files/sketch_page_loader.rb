@@ -2,6 +2,7 @@ require_relative '../core/point'
 require_relative '../core/audit_hash'
 
 require_relative '../element_framework/page'
+require_relative '../element_framework/shape_group'
 
 module LibreFrame
   module Files
@@ -18,7 +19,7 @@ module LibreFrame
         'border' => Styling::Stroke,
         'curvePoint' => ElementFramework::CurvePoint,
         'shapePath' => ElementFramework::ShapePath,
-        'shapeGroup' => ElementFramework::Group,
+        'shapeGroup' => ElementFramework::ShapeGroup,
         'page' => ElementFramework::Page
       }
 
