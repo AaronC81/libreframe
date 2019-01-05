@@ -35,6 +35,19 @@ module LibreFrame
         end
       end
 
+      def cairo_draw_styles(ctx)
+        # TODO: Does this handle deep nesting properly?
+        super
+        parent.cairo_draw_styles(ctx) if parent.is_a?(ShapeGroup)
+      end
+      
+      def drawing_paths
+        # TODO: Doesn't support curves or rounded corners or anything yet
+        [
+          absolute_points
+        ]
+      end
+
       def cairo_draw(ctx)
         # Iterate over each point
         absolute_points.length.times do |i|
