@@ -48,63 +48,6 @@ module LibreFrame
         ]
       end
 
-      def cairo_draw(ctx)
-        # Iterate over each point
-        absolute_points.length.times do |i|
-          # Get current point, as a CurvePoint
-          previous_curve_point = points[i - 1]
-          current_curve_point = points[i]
-          next_curve_point = points[(i + 1) % points.length]
-
-          # Find absolute points
-          previous_point = absolute_points[i - 1]
-          current_point = absolute_points[i]
-          next_point = absolute_points[(i + 1) % points.length]
-
-          # Move the point towards the previous and next points
-          moved_towards_previous_point = Core::Geometry.change_line_length(
-            previous_point, current_point,
-            -1 * (current_curve_point.corner_radius || 0)
-          )
-          moved_towards_next_point = Core::Geometry.change_line_length(
-            next_point, current_point,
-            -1 * (current_curve_point.corner_radius || 0)
-          )
-
-          # Draw a curve for this point
-          # TODO: The rounding isn't "intense" enough for some corners
-          #       Sketch probably transforms the radius somehow, maybe based on
-          #       what the size of the corner round will be
-          if current_curve_point.has_curve_to? || current_curve_point.has_curve_from?
-            ctx.curve_to(
-              make_absolute(current_curve_point.curve_from).x,
-              make_absolute(current_curve_point.curve_from).y,
-              make_absolute(next_curve_point.curve_to).x,
-              make_absolute(next_curve_point.curve_to).y,
-              make_absolute(next_curve_point.point).x,
-              make_absolute(next_curve_point.point).y
-            )
-          else
-            ctx.line_to(
-              moved_towards_previous_point.x,
-              moved_towards_previous_point.y
-            )
-            ctx.curve_to(
-              current_point.x,
-              current_point.y,
-              moved_towards_next_point.x,
-              moved_towards_next_point.y,
-              moved_towards_next_point.x,
-              moved_towards_next_point.y
-            )
-          end
-        end
-        ctx.close_path if closed?  
-
-        cairo_draw_styles(ctx)
-        cairo_draw_children(ctx)
-      end
-
       def handles
         super + points.map do |curve_point|
           UI::Handles::Handle.new(self,
