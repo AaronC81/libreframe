@@ -21,10 +21,6 @@ module LibreFrame
       end
 
       def cairo_draw_styles(ctx); end
-
-      def cairo_draw(ctx)
-        cairo_draw_children(ctx)
-      end
     end
   end
 end

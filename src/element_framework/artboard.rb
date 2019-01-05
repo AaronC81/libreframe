@@ -25,16 +25,6 @@ module LibreFrame
         ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR)
         ctx.fill_preserve
       end
-
-      def cairo_draw(ctx)        
-        abs_pos = absolute_position
-        ctx.rectangle(abs_pos.x, abs_pos.y, view.sl(width), view.sl(height))
-
-        ctx.set_source_rgba(*DEFAULT_BACKGROUND_COLOR)
-        ctx.fill_preserve
-
-        cairo_draw_children(ctx)
-      end
     end
   end
 end

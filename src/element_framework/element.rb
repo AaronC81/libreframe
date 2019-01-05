@@ -73,31 +73,6 @@ module LibreFrame
         true
       end
 
-      # Draws this element onto a Gtk3 Cairo graphics context. This abstract
-      # implementation simply throws an exception, so subclasses MUST NOT
-      # invoke super in their implementations. If the element has children, it
-      # should usually draw them too using #cairo_draw_children.
-      def cairo_draw(context)
-        raise 'this element cannot be drawn (tried to draw abstract Element)'
-      end
-
-      # Draws all of the children of this element onto a Gtk3 Cairo graphics
-      # context by invoking their #cairo_draw implementations.
-      def cairo_draw_children(context)
-        context.push_group
-        context.new_path
-
-        children.each do |c|
-          context.save
-          c.cairo_apply_rotation(context)
-          c.cairo_draw(context)
-          context.restore
-        end
-
-        context.pop_group_to_source
-        context.paint
-      end
-
       # Represents this element and all of its children, and of the childrens'
       # children, etc. as an array.
       def onedimensionalize
