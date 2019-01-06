@@ -29,7 +29,19 @@ module LibreFrame
           end
 
           # TODO: Make this actually detect op
-          current_subject_paths = clipper.union
+          case child.boolean_operation
+          when 0
+            current_subject_paths = clipper.union
+          when 1
+            current_subject_paths = clipper.difference
+          when 2
+            current_subject_paths = clipper.intersection
+          when 3
+            current_subject_paths = clipper.xor
+          else
+            puts "unknown boolean operator, defaulting to union"
+            current_subject_paths = clipper.union
+          end
 
           clipper.clear!
         end
