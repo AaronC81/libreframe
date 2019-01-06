@@ -83,54 +83,6 @@ module LibreFrame
             ctx.fill
           end
         end
-
-
-        ## ------
-
-        require 'clipper'
-
-        rect = [[20, 20], [120, 20], [120, 120], [20, 120]]
-        union_rect = [[10, 10], [30, 10], [30, 30], [10, 30]]
-        diff_rect = [[80, 80], [90, 80], [90, 90], [80, 90]]
-
-        c = Clipper::Clipper.new
-        c.add_subject_polygon(rect)
-        c.add_clip_polygon(union_rect)
-        new_path = c.union
-        c.clear!
-        c.add_subject_polygon(new_path.first)
-        c.add_clip_polygon(diff_rect)
-        new_path = c.difference
-
-        shell, hole = new_path
-
-        p new_path
-        ctx.move_to(*shell.first)
-        shell.each do |pt_a|
-          ctx.line_to(*pt_a)
-        end
-        ctx.line_to(*shell.first)
-
-        ctx.fill_rule = ::Cairo::FILL_RULE_EVEN_ODD
-
-        ctx.move_to(*hole.first)
-        hole.each do |pt_a|
-          ctx.line_to(*pt_a)
-        end
-        ctx.line_to(*hole.first)
-
-        ctx.move_to(65, 50)
-        ctx.line_to(65, 65)
-        ctx.line_to(75, 65)
-        ctx.line_to(75, 50)
-        ctx.line_to(65, 50)
-
-        ctx.set_source_rgba(0.5, 0.5, 0.5, 1)
-        ctx.fill_preserve
-        ctx.set_source_rgba(0, 0, 0, 1)
-        ctx.stroke
-
-        ## ------
       end
 
       # Handles a mouse movement.
