@@ -42,12 +42,45 @@ module LibreFrame
       end
       
       def drawing_paths
-        # TODO: Doesn't support curves or rounded corners or anything yet
-        [
-          absolute_points.map do |pt|
-            pt.rotate_around_point(total_rotation, center)
-          end
-        ]
+        # TODO: Doesn't support curves yet
+        
+        drawing_points = []
+        absolute_points.length.times do |i|
+          # Get current point, as a CurvePoint
+          previous_curve_point = points[i - 1]
+          current_curve_point = points[i]
+          next_curve_point = points[(i + 1) % points.length]
+
+          # Find absolute points, also rotating them
+          previous_point = absolute_points[i - 1]
+            .rotate_around_point(total_rotation, center)
+          current_point = absolute_points[i]
+            .rotate_around_point(total_rotation, center)
+          next_point = absolute_points[(i + 1) % points.length]
+            .rotate_around_point(total_rotation, center)
+
+          # Copy the current point but moved towards the previous/next ones, in
+          # order to create points for a rounded corner Bezier curve
+          moved_towards_previous_point = Core::Geometry.change_line_length(
+            previous_point, current_point,
+            -1 * (current_curve_point.corner_radius || 0)
+          )
+          moved_towards_next_point = Core::Geometry.change_line_length(
+            next_point, current_point,
+            -1 * (current_curve_point.corner_radius || 0)
+          )
+
+          # Use Bezier curve to work out corner rounding
+          points = Core::Geometry.bezier_to_points(
+            moved_towards_previous_point,
+            current_point,
+            moved_towards_next_point,
+            moved_towards_next_point
+          )
+          drawing_points.push(*points)
+        end
+
+        [drawing_points]
       end
 
       def handles
