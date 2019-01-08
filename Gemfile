@@ -1,5 +1,6 @@
 source :rubygems
 
+gem 'bezier'
 gem 'clipper'
 gem 'gtk3'
 gem 'zip'
