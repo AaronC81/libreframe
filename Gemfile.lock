@@ -10,6 +10,7 @@ GEM
     cairo-gobject (3.3.0)
       cairo (>= 1.16.1)
       glib2 (= 3.3.0)
+    clipper (2.9.1)
     eventmachine (1.2.7)
     gdk3 (3.3.0)
       cairo-gobject (= 3.3.0)
@@ -78,6 +79,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  clipper
   gtk3
   pkg-config
   solargraph
