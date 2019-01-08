@@ -79,12 +79,11 @@ module LibreFrame
         # Create curve instance
         bezier = Bezier::Bezier.new(start, control_1, control_2, finish)
 
-        resolution = total_distance # TODO: Multiply by something?
+        resolution = total_distance
         resolution *= resolution_factor
 
         # Work out time step based on resolution
         time_step = 1 / resolution
-        p time_step
         current_time = 0
 
         # Calculate each point
